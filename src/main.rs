@@ -1,11 +1,11 @@
-use rust_environment_api::Environment;
+use rust_environment_api::{default_menu, Account, ApiApplication, ApiApplicationConfig, Environment, Settings};
 
 fn print_help() {
-    println!("Rust Environment API");
+    println!("Rust Environment + Mathematics API");
     println!();
     println!("Usage: rust-env <command> [argument]");
     println!();
-    println!("Commands:");
+    println!("Core:");
     println!("  info              Show system and process information");
     println!("  vars              List environment variables");
     println!("  get <NAME>        Read one environment variable");
@@ -14,7 +14,14 @@ fn print_help() {
     println!("  executable        Show executable path");
     println!("  temp              Show temporary directory");
     println!("  system            Show system information");
-    println!("  json              Export a complete environment snapshot as JSON");
+    println!("  json              Export environment snapshot as JSON");
+    println!();
+    println!("Application:");
+    println!("  account           Show default account model");
+    println!("  menu              Show menus and submenus as JSON");
+    println!("  settings          Show default settings as JSON");
+    println!("  api               Show API application configuration");
+    println!("  api-app           Show an example API application");
     println!("  help              Show this help");
 }
 
@@ -37,9 +44,7 @@ fn main() {
             println!("Working Dir:    {cwd}");
             println!("Environment:    {} variables", Environment::variables().len());
         }
-        "vars" => {
-            for (key, value) in Environment::variables() { println!("{key}={value}"); }
-        }
+        "vars" => for (key, value) in Environment::variables() { println!("{key}={value}"); },
         "get" => match args.next().and_then(|v| v.into_string().ok()) {
             Some(key) => match Environment::get(&key) { Ok(v) => println!("{v}"), Err(e) => { eprintln!("{e}"); std::process::exit(1); } },
             None => { eprintln!("Usage: rust-env get <NAME>"); std::process::exit(2); }
@@ -50,6 +55,14 @@ fn main() {
         "temp" => println!("{}", Environment::temp_dir().display()),
         "system" => match serde_json::to_string_pretty(&Environment::system()) { Ok(v) => println!("{v}"), Err(e) => { eprintln!("{e}"); std::process::exit(1); } },
         "json" => match Environment::snapshot().and_then(|s| s.to_json_pretty()) { Ok(v) => println!("{v}"), Err(e) => { eprintln!("{e}"); std::process::exit(1); } },
+        "account" => println!("{}", serde_json::to_string_pretty(&Account::new("acct-1", "demo", "demo@example.invalid")).unwrap()),
+        "menu" => println!("{}", serde_json::to_string_pretty(&default_menu()).unwrap()),
+        "settings" => println!("{}", serde_json::to_string_pretty(&Settings::default()).unwrap()),
+        "api" => println!("{}", serde_json::to_string_pretty(&ApiApplicationConfig::default()).unwrap()),
+        "api-app" => {
+            let app = ApiApplication::new("app-1", "Rust Math Client", "acct-1");
+            println!("{}", serde_json::to_string_pretty(&app).unwrap());
+        }
         "help" | "--help" | "-h" => print_help(),
         other => { eprintln!("Unknown command: {other}"); print_help(); std::process::exit(2); }
     }
