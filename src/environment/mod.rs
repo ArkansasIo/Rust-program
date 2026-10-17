@@ -26,8 +26,21 @@ impl Environment {
         variables::exists(key)
     }
 
+    /// Return environment variables, redacting likely secret values by default.
     pub fn variables() -> Vec<(String, String)> {
         variables::all()
+    }
+
+    /// Return environment variables without redaction.
+    ///
+    /// The result may contain credentials and should not be logged or shared.
+    pub fn variables_unredacted() -> Vec<(String, String)> {
+        variables::all_unredacted()
+    }
+
+    /// Check whether a variable name is likely to contain a secret.
+    pub fn is_sensitive_variable_name(name: &str) -> bool {
+        variables::is_sensitive_name(name)
     }
 
     pub fn arguments() -> ProcessArguments {
@@ -52,5 +65,12 @@ impl Environment {
 
     pub fn snapshot() -> Result<EnvironmentSnapshot, EnvironmentError> {
         EnvironmentSnapshot::collect()
+    }
+
+    /// Collect a snapshot with likely secret values restored.
+    ///
+    /// This should only be used for trusted local diagnostics.
+    pub fn snapshot_unredacted() -> Result<EnvironmentSnapshot, EnvironmentError> {
+        EnvironmentSnapshot::collect_unredacted()
     }
 }
