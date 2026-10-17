@@ -1,19 +1,12 @@
 # Application Account, Menus, Settings, and API
 
-The Rust Environment API now includes a reusable application model suitable for a CLI, web UI, desktop application, or future server API.
+The Rust Environment API includes reusable application models suitable for a CLI, web UI, desktop application, or future server API.
 
 ## Account
 
-An account contains:
+An account contains a stable account ID, username, display name, email address, roles, and enabled/disabled state. Roles currently support ordinary users and administrators.
 
-- stable account ID
-- username
-- display name
-- email address
-- roles
-- enabled/disabled state
-
-Roles currently support ordinary users and administrators. Authentication and password storage are intentionally not implemented in this library; production authentication should use a dedicated identity provider or secure password-hashing service.
+Authentication and password storage are intentionally not implemented in this library. Production authentication should use a dedicated identity provider or secure password-hashing service.
 
 ## Main menu
 
@@ -62,11 +55,17 @@ The default API configuration uses:
 
 - Base path: `/api`
 - Version: `v1`
-- Authentication model: bearer token
-- Rate limit: 60 requests/minute
+- Authentication model label: bearer token
+- Rate limit setting: 60 requests/minute
 - Scopes: `read`, `write`, `math`, `environment`
 
-No real bearer tokens or credentials are committed to this repository. Token issuance, rotation, hashing, revocation, and persistence belong in the server/authentication layer.
+These settings describe configuration only; this crate does not implement an HTTP server, enforce rate limits, issue bearer tokens, or authenticate requests. Token issuance, rotation, hashing, revocation, and persistence belong in a server/authentication layer.
+
+## Environment privacy
+
+The CLI `vars` and `json` commands redact likely secret values by default. The matching is heuristic and relies on variable names, so it cannot guarantee that every credential will be found. The `--raw` flag and the library's `variables_unredacted()` / `snapshot_unredacted()` methods intentionally expose raw values and should be used only for trusted local diagnostics.
+
+The `get` command prints the requested value directly by design. Avoid using it for credentials in shared terminals, logs, or recordings.
 
 ## CLI
 
