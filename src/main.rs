@@ -81,7 +81,9 @@ fn main() {
             Some(key) => match Environment::get(&key) {
                 Ok(value) => {
                     if Environment::is_sensitive_variable_name(&key) {
-                        eprintln!("Warning: {key} appears sensitive; printing its value explicitly.");
+                        eprintln!(
+                            "Warning: {key} appears sensitive; printing its value explicitly."
+                        );
                     }
                     println!("{value}");
                 }
@@ -96,7 +98,11 @@ fn main() {
             }
         },
         "args" => {
-            for (index, value) in Environment::arguments().to_lossy_strings().iter().enumerate() {
+            for (index, value) in Environment::arguments()
+                .to_lossy_strings()
+                .iter()
+                .enumerate()
+            {
                 println!("[{index}] {value}");
             }
         }
@@ -134,11 +140,7 @@ fn main() {
                 }
             }
         }
-        "account" => print_json(&Account::new(
-            "acct-1",
-            "demo",
-            "demo@example.invalid",
-        )),
+        "account" => print_json(&Account::new("acct-1", "demo", "demo@example.invalid")),
         "menu" => print_json(&default_menu()),
         "settings" => print_json(&Settings::default()),
         "api" => print_json(&ApiApplicationConfig::default()),
