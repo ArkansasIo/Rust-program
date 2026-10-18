@@ -65,8 +65,5 @@ pub fn is_sensitive_name(name: &str) -> bool {
         "COOKIE",
     ];
 
-    SECRET_MARKERS
-        .iter()
-        .any(|marker| compact.contains(marker))
-        || compact.ends_with("KEY")
+    SECRET_MARKERS.iter().any(|marker| compact.contains(marker)) || compact.ends_with("KEY")
 }
