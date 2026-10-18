@@ -32,7 +32,9 @@ fn environment_lookup_works() {
 #[test]
 fn snapshot_serializes() {
     let snapshot = Environment::snapshot().expect("snapshot should collect");
-    let json = snapshot.to_json_pretty().expect("snapshot should serialize");
+    let json = snapshot
+        .to_json_pretty()
+        .expect("snapshot should serialize");
     assert!(json.contains("current_directory"));
 }
 
