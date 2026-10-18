@@ -61,7 +61,10 @@ fn main() {
             println!("Process ID:     {}", system.process_id);
             println!("Executable:     {}", system.executable);
             println!("Working Dir:    {cwd}");
-            println!("Environment:    {} variables", Environment::variables().len());
+            println!(
+                "Environment:    {} variables",
+                Environment::variables().len()
+            );
         }
         "vars" => {
             let raw = args.next().is_some_and(|value| value == "--raw");
