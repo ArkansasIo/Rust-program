@@ -16,9 +16,13 @@ pub fn current() -> SystemInfo {
         os: std::env::consts::OS.to_string(),
         family: std::env::consts::FAMILY.to_string(),
         architecture: std::env::consts::ARCH.to_string(),
-        executable: std::env::current_exe().map(|p| p.display().to_string()).unwrap_or_default(),
+        executable: std::env::current_exe()
+            .map(|path| path.display().to_string())
+            .unwrap_or_default(),
         process_id: std::process::id(),
         package_version: env!("CARGO_PKG_VERSION").to_string(),
-        rust_version: option_env!("RUSTC_VERSION").unwrap_or("unknown").to_string(),
+        rust_version: option_env!("RUSTC_VERSION")
+            .unwrap_or("unknown")
+            .to_string(),
     }
 }
