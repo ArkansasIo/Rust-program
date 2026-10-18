@@ -33,7 +33,11 @@ pub fn default_menu() -> Vec<MenuItem> {
             MenuItem::new("profile", "Profile", "account.profile"),
             MenuItem::new("security", "Security", "account.security"),
             MenuItem::new("sessions", "Sessions", "account.sessions"),
-            MenuItem::new("api-applications", "API Applications", "account.api-applications"),
+            MenuItem::new(
+                "api-applications",
+                "API Applications",
+                "account.api-applications",
+            ),
         ]),
         MenuItem::new("math", "Mathematics", "math").with_children(vec![
             MenuItem::new("calculator", "Calculator", "math.calculate"),
