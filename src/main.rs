@@ -1,5 +1,5 @@
 use rust_environment_api::{
-    default_menu, Account, ApiApplication, ApiApplicationConfig, Environment, Settings,
+    Account, ApiApplication, ApiApplicationConfig, Environment, Settings, default_menu,
 };
 
 fn print_help() {
