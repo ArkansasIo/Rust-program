@@ -12,10 +12,19 @@ pub struct ApiApplication {
 
 impl ApiApplication {
     pub fn new(id: &str, name: &str, owner_account_id: &str) -> Self {
-        Self { id: id.into(), name: name.into(), description: String::new(), owner_account_id: owner_account_id.into(), scopes: vec!["read".into()], enabled: true }
+        Self {
+            id: id.into(),
+            name: name.into(),
+            description: String::new(),
+            owner_account_id: owner_account_id.into(),
+            scopes: vec!["read".into()],
+            enabled: true,
+        }
     }
 
-    pub fn can(&self, scope: &str) -> bool { self.enabled && self.scopes.iter().any(|s| s == scope || s == "*") }
+    pub fn can(&self, scope: &str) -> bool {
+        self.enabled && self.scopes.iter().any(|value| value == scope || value == "*")
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -29,6 +38,17 @@ pub struct ApiApplicationConfig {
 
 impl Default for ApiApplicationConfig {
     fn default() -> Self {
-        Self { base_path: "/api".into(), version: "v1".into(), authentication: "bearer-token".into(), rate_limit_per_minute: 60, scopes: vec!["read".into(), "write".into(), "math".into(), "environment".into()] }
+        Self {
+            base_path: "/api".into(),
+            version: "v1".into(),
+            authentication: "bearer-token".into(),
+            rate_limit_per_minute: 60,
+            scopes: vec![
+                "read".into(),
+                "write".into(),
+                "math".into(),
+                "environment".into(),
+            ],
+        }
     }
 }
