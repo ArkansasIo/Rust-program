@@ -11,10 +11,19 @@ pub struct MenuItem {
 
 impl MenuItem {
     pub fn new(id: &str, label: &str, command: &str) -> Self {
-        Self { id: id.into(), label: label.into(), command: command.into(), enabled: true, children: Vec::new() }
+        Self {
+            id: id.into(),
+            label: label.into(),
+            command: command.into(),
+            enabled: true,
+            children: Vec::new(),
+        }
     }
 
-    pub fn with_children(mut self, children: Vec<MenuItem>) -> Self { self.children = children; self }
+    pub fn with_children(mut self, children: Vec<MenuItem>) -> Self {
+        self.children = children;
+        self
+    }
 }
 
 pub fn default_menu() -> Vec<MenuItem> {
@@ -24,7 +33,11 @@ pub fn default_menu() -> Vec<MenuItem> {
             MenuItem::new("profile", "Profile", "account.profile"),
             MenuItem::new("security", "Security", "account.security"),
             MenuItem::new("sessions", "Sessions", "account.sessions"),
-            MenuItem::new("api-applications", "API Applications", "account.api-applications"),
+            MenuItem::new(
+                "api-applications",
+                "API Applications",
+                "account.api-applications",
+            ),
         ]),
         MenuItem::new("math", "Mathematics", "math").with_children(vec![
             MenuItem::new("calculator", "Calculator", "math.calculate"),

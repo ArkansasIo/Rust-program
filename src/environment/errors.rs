@@ -8,11 +8,11 @@ pub enum EnvironmentError {
 }
 
 impl fmt::Display for EnvironmentError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Variable(err) => write!(f, "environment variable error: {err}"),
-            Self::Io(err) => write!(f, "I/O error: {err}"),
-            Self::Json(err) => write!(f, "JSON serialization error: {err}"),
+            Self::Variable(error) => write!(formatter, "environment variable error: {error}"),
+            Self::Io(error) => write!(formatter, "I/O error: {error}"),
+            Self::Json(error) => write!(formatter, "JSON serialization error: {error}"),
         }
     }
 }
@@ -20,13 +20,19 @@ impl fmt::Display for EnvironmentError {
 impl Error for EnvironmentError {}
 
 impl From<std::env::VarError> for EnvironmentError {
-    fn from(value: std::env::VarError) -> Self { Self::Variable(value) }
+    fn from(value: std::env::VarError) -> Self {
+        Self::Variable(value)
+    }
 }
 
 impl From<std::io::Error> for EnvironmentError {
-    fn from(value: std::io::Error) -> Self { Self::Io(value) }
+    fn from(value: std::io::Error) -> Self {
+        Self::Io(value)
+    }
 }
 
 impl From<serde_json::Error> for EnvironmentError {
-    fn from(value: serde_json::Error) -> Self { Self::Json(value) }
+    fn from(value: serde_json::Error) -> Self {
+        Self::Json(value)
+    }
 }
