@@ -11,10 +11,19 @@ pub struct MenuItem {
 
 impl MenuItem {
     pub fn new(id: &str, label: &str, command: &str) -> Self {
-        Self { id: id.into(), label: label.into(), command: command.into(), enabled: true, children: Vec::new() }
+        Self {
+            id: id.into(),
+            label: label.into(),
+            command: command.into(),
+            enabled: true,
+            children: Vec::new(),
+        }
     }
 
-    pub fn with_children(mut self, children: Vec<MenuItem>) -> Self { self.children = children; self }
+    pub fn with_children(mut self, children: Vec<MenuItem>) -> Self {
+        self.children = children;
+        self
+    }
 }
 
 pub fn default_menu() -> Vec<MenuItem> {
