@@ -67,9 +67,9 @@ impl Environment {
         EnvironmentSnapshot::collect()
     }
 
-    /// Collect a snapshot with likely secret values restored.
+    /// Collect a snapshot without redacting values.
     ///
-    /// This should only be used for trusted local diagnostics.
+    /// Only use this for trusted local diagnostics.
     pub fn snapshot_unredacted() -> Result<EnvironmentSnapshot, EnvironmentError> {
         EnvironmentSnapshot::collect_unredacted()
     }
