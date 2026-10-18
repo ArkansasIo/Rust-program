@@ -23,7 +23,11 @@ impl ApiApplication {
     }
 
     pub fn can(&self, scope: &str) -> bool {
-        self.enabled && self.scopes.iter().any(|value| value == scope || value == "*")
+        self.enabled
+            && self
+                .scopes
+                .iter()
+                .any(|value| value == scope || value == "*")
     }
 }
 
