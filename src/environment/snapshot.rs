@@ -1,5 +1,10 @@
+use super::{
+    errors::EnvironmentError,
+    paths,
+    system::{self, SystemInfo},
+    variables,
+};
 use serde::Serialize;
-use super::{errors::EnvironmentError, paths, system::{self, SystemInfo}, variables};
 
 #[derive(Debug, Clone, Serialize)]
 pub struct EnvironmentSnapshot {
@@ -17,7 +22,9 @@ impl EnvironmentSnapshot {
         let executable = paths::executable()?;
         Ok(Self {
             system: system::current(),
-            arguments: std::env::args_os().map(|v| v.to_string_lossy().into_owned()).collect(),
+            arguments: std::env::args_os()
+                .map(|v| v.to_string_lossy().into_owned())
+                .collect(),
             current_directory: current_directory.display().to_string(),
             executable: executable.display().to_string(),
             temp_directory: paths::temp_dir().display().to_string(),
