@@ -1,0 +1,11 @@
+id,class,role
+fighter,Fighter,fast interceptor
+corvette,Corvette,patrol escort
+frigate,Frigate,anti-fighter
+ destroyer,Destroyer,frontline
+cruiser,Cruiser,heavy combat
+battleship,Battleship,capital ship
+carrier,Carrier,fighter deployment
+dreadnought,Dreadnought,siege warfare
+titan,Titan,super capital
+flagship,Flagship,command vessel
