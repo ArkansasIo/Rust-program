@@ -6,103 +6,30 @@ A modular, server-authoritative Rust game framework for building a large-scale R
 
 The framework now covers four interacting layers:
 
-1. **RPG/MMORPG** — characters, attributes, sub-attributes, resources, combat, abilities, equipment, inventory, quests, progression, buffs, debuffs, threat, AI, PvE, PvP, parties, guilds, social systems, economy, crafting, trading, auction systems, instances, persistence, replication, authentication, and networking.
+1. **RPG/MMORPG** — characters, attributes, resources, combat, abilities, equipment, inventory, quests, progression, effects, threat, AI, PvE, PvP, parties, guilds, social systems, economy, crafting, trading, auctions, instances, persistence, replication, authentication, networking, and shards.
 2. **PvE Encounter Layer** — common mobs, veterans, elites, named enemies, bosses, dungeon encounters, raid encounters, world bosses, phase mechanics, enrage timers, adds, immunities, loot, and encounter power budgets.
-3. **Sci-Fi 4X / RTS Layer** — galaxies, sectors, star systems, planets, colonies, empires, factions, fleets, modular ships, research, diplomacy, trade, strategic resources, territory, AI empires, and victory conditions.
+3. **Sci-Fi 4X / RTS Layer** — galaxies, sectors, star systems, planets, colonies, empires, fleets, modular ships, research, diplomacy, trade, strategic resources, AI empires, events, and victory conditions.
 4. **Turn-Based Tactical Layer** — initiative, tactical actions, ground units, boarding actions, colony assaults, PvP scenarios, and deterministic server-side combat resolution.
 
 ## RPG Attribute Model
 
-### Core attributes
-
-| Attribute | Primary role |
-|---|---|
-| STR | Physical power, melee damage, carry capacity |
-| DEX | Accuracy, attack speed, evasion, critical chance |
-| CON | Health, stamina, resistance |
-| INT | Spell power and magic scaling |
-| WIS | Healing, mana efficiency, status resistance |
-| VIT | Maximum health and survivability |
-| SPI | Resource regeneration and aura strength |
-| LCK | Drop/proc/variance modifiers |
-| WIL | Crowd-control resistance and resolve |
-| CHA | Threat, leadership and social modifiers |
-
-### Derived/sub-attributes
-
-Physical power, armor penetration, attack speed, accuracy, evasion, weapon handling, critical damage, spell power, elemental mastery, cast speed, magic penetration, mana efficiency, overcharge, HP regeneration, shield strength, damage reduction, block, and parry.
+Core attributes include STR, DEX, CON, INT, WIS, VIT, SPI, LCK, WIL, and CHA. Derived values cover physical power, penetration, attack speed, accuracy, evasion, critical scaling, spell power, elemental mastery, regeneration, shields, mitigation, block, parry, threat, and leadership.
 
 ## Combat
 
-Supported concepts include:
+Supported concepts include physical and elemental damage, resistance and vulnerability, critical hits, armor mitigation, penetration, shields, healing, cooldowns, resources, threat, buffs, debuffs, crowd control, damage-over-time, healing-over-time, immunities, and PvE/PvP normalization.
 
-- Physical, fire, ice, lightning, earth, wind, water, light, dark, arcane, poison, bleed, void, chaos, and true damage.
-- Flat resistance, percentage resistance, absorption, vulnerability, and immunity.
-- Critical hits, armor mitigation, penetration, shields, damage reduction, healing, cooldowns, resources, and threat.
-- Buffs, debuffs, crowd control, damage-over-time, healing-over-time, shields, immunities, and vulnerability effects.
-- PvE/PvP normalization and context-specific balancing.
-- Crowd-control diminishing returns: 100%, 50%, 25%, then temporary immunity.
+Crowd-control diminishing returns use the configured progression of 100%, 50%, 25%, followed by temporary immunity.
 
-## Equipment
+## Equipment and Enemies
 
-Equipment slots include head, chest, legs, gloves, boots, main hand, off hand, two rings, amulet, cloak, belt, and two trinkets.
+Equipment supports standard RPG slots, item power, rarity, PvE/PvP context, procs, sets, requirements, resilience, tenacity, haste, healing, armor, magic resistance, and damage.
 
-Rarities: Common, Uncommon, Rare, Epic, Legendary, Mythic.
-
-Equipment supports separate PvE/PvP context data, item power, procs, set IDs, level requirements, cosmetics, resilience, tenacity, haste, healing, armor, magic resistance, and damage.
-
-## Enemy and Boss Framework
-
-Enemy ranks:
-
-- Common
-- Veteran
-- Elite
-- Rare
-- Named
-- Boss
-
-AI archetypes:
-
-- Brute
-- Assassin
-- Caster
-- Controller
-- Summoner
-- Support
-- Tank
-- Sniper
-
-Boss types:
-
-- Dungeon
-- World
-- Raid
-- Event
-- Story
-- Mythic
-- Secret
-
-Bosses support HP/time phase triggers, new abilities, adds, arena modifiers, damage-type shifts, immunities, and enrage timers.
+Enemy ranks include Common, Veteran, Elite, Rare, Named, and Boss. AI archetypes include Brute, Assassin, Caster, Controller, Summoner, Support, Tank, and Sniper. Boss definitions support phases, adds, immunities, arena modifiers, damage-type shifts, and enrage timers.
 
 ## Formula Library
 
-The `formulas` module contains reusable implementations for:
-
-- Max HP
-- Physical damage
-- Critical chance
-- Soft caps
-- Diminishing returns
-- Armor mitigation
-- Final damage
-- Hit chance
-- Boss HP scaling
-- Encounter power budgets
-- Fleet power
-- Research time
-- Trade income
-- Total player/empire power
+The `formulas` module centralizes reusable calculations for max HP, physical damage, critical chance, soft caps, diminishing returns, armor mitigation, final damage, hit chance, boss scaling, encounter budgets, fleet power, research time, trade income, and total power.
 
 Example:
 
@@ -115,49 +42,27 @@ DamageTaken = IncomingDamage × (1 - DamageMitigation)
 
 ## Sci-Fi 4X / RTS
 
-### Galaxy
+The strategic layer models:
 
-```text
-Galaxy
-└── Sectors
-    └── Star Systems
-        ├── Planets
-        ├── Stations
-        ├── Asteroid Fields
-        └── Anomalies
+- Galaxy → sectors → star systems → planets/stations/anomalies.
+- Empire attributes: Industry, Science, Economy, Influence, Logistics, Intelligence, Stability.
+- Strategic resources and planet buildings.
+- Fighter through Flagship ship classes with component-driven construction.
+- Fleets, sensors, morale, command capacity, and combat power.
+- Physics, Engineering, Biotech, Psionics, Economics, Military, and Computing research.
+- Neutral, Trade, Non-Aggression, Research Pact, Alliance, Vassal, and War relations.
+- Expansionist, Defensive, Economic, Aggressive, Technological, and Diplomatic AI styles.
+- Persistent galaxy events and victory conditions.
+
+## Runtime
+
+`GameRuntime` provides a deterministic server-side tick loop with configurable tick rate, per-frame work limits, instance ticking, shard management, event bus ownership, and runtime metrics.
+
+```rust
+let mut runtime = rust_battle_engine::GameRuntime::default();
+runtime.step();
+runtime.step_n(4);
 ```
-
-### Empire attributes
-
-Industry, Science, Economy, Influence, Logistics, Intelligence, and Stability.
-
-### Strategic resources
-
-Credits, Minerals, Gas, Energy, Data, Dark Matter, Antimatter, Nanites, Quantum Cores, and Alien Artifacts.
-
-### Ships
-
-Fighter, Corvette, Frigate, Destroyer, Cruiser, Battleship, Carrier, Dreadnought, Titan, and Flagship.
-
-Ships are component-driven and support weapons, armor, shields, point defense, reactors, sensors, engines, AI cores, and targeting computers.
-
-### Research
-
-Physics, Engineering, Biotech, Psionics, Economics, Military, and Computing research branches are supported.
-
-### Diplomacy
-
-Neutral, Trade, Non-Aggression, Research Pact, Alliance, Vassal, and War relations are modeled.
-
-### Empire AI
-
-Expansionist, Defensive, Economic, Aggressive, Technological, and Diplomatic strategy styles are supported.
-
-## Turn-Based Tactical Combat
-
-Units calculate initiative from speed, tactical skill, and equipment bonus. Actions include Move, Attack, Ability, Overwatch, Use Item, Defend, and Interact.
-
-The system can be used for boarding actions, colony invasions, base assaults, tactical missions, and arena/PvP battles.
 
 ## Server Architecture
 
@@ -168,18 +73,19 @@ Network / Authentication / Rate Limit
   ↓
 Authoritative Game Server
   ├── RPG Character Service
-  ├── Combat Service
-  ├── AI Service
-  ├── Encounter Service
-  ├── World / Shard Service
-  ├── Galaxy / Empire Service
-  ├── Fleet / Space Combat Service
+  ├── Combat / Ability / Effects
+  ├── AI / Threat
+  ├── Encounter / Dungeon / Raid
+  ├── World / Shard / Instance
+  ├── Galaxy / Empire / Planet
+  ├── Fleet / Space Combat
+  ├── Research / Diplomacy / Strategy
   ├── Tactical Turn Service
-  ├── Social / Guild / Chat Service
-  ├── Economy / Trade Service
+  ├── Social / Guild / Chat
+  ├── Economy / Trade / Auction
   └── Persistence / Replication
   ↓
-Database + Cache + Telemetry
+MySQL + Redis + Telemetry
 ```
 
 ## Repository Structure
@@ -206,31 +112,47 @@ src/
 ├── strategy.rs         # Empire AI and victory conditions
 ├── turn_based.rs       # Tactical turn engine
 ├── galaxy_events.rs    # Persistent universe events
+├── runtime.rs          # Authoritative simulation tick loop
 └── existing RPG/MMO modules...
+
+database/schema.sql     # MySQL persistence schema
+data/                   # Seed/content tables
+config/                 # Runtime and balance configuration
+docs/                   # Architecture and game-design documentation
+tests/                  # Integration tests
+docker-compose.yml      # Local MySQL + Redis development stack
 ```
 
-## Build
+## Local Infrastructure
 
 ```bash
+docker compose up -d
 cargo check
 cargo test
 cargo run
 ```
 
+The compose stack provisions MySQL 8.4 and Redis 7 for local development. The Rust framework currently keeps database/network dependencies optional at the architecture level so the core simulation remains lightweight and deterministic.
+
+## CI
+
+GitHub Actions validates formatting, compilation, Clippy warnings, and tests on Ubuntu, Windows, and macOS. The workflow formats the workspace before compilation so generated modules do not block the validation pipeline on formatting alone.
+
 ## Design Principles
 
-- Server authoritative simulation.
+- Server-authoritative simulation.
 - Deterministic combat calculations where practical.
 - Data-driven content.
 - Modular systems with explicit ownership boundaries.
 - PvE and PvP rules can diverge without duplicating the entire combat engine.
 - Persistent MMO state is separated from transient encounter state.
-- Strategic galaxy simulation is independent of real-time tactical instances.
+- Strategic galaxy simulation is independent of tactical instances.
 - Formulas are centralized for balance and telemetry.
+- Runtime orchestration is separated from individual gameplay systems.
 
 ## Status
 
-This repository is an expanding framework/scaffold rather than a finished commercial MMO server. The modules define the core data model and deterministic logic needed to continue toward production services, database adapters, network transport, dedicated server binaries, live configuration, and load-tested infrastructure.
+This repository is an expanding framework/scaffold rather than a finished commercial MMO server. The current codebase provides the core data model, combat/RPG systems, MMO services, strategic systems, tactical systems, runtime loop, database schema, local infrastructure, documentation, and CI foundation needed for continued production development.
 
 ## License
 
