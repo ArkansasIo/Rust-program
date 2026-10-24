@@ -10,6 +10,7 @@ pub mod boss_runtime;
 pub mod character;
 pub mod chat;
 pub mod combat;
+pub mod content_loader;
 pub mod core;
 pub mod dialogue;
 pub mod diplomacy;
