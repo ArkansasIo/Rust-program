@@ -1,0 +1,43 @@
+category,name,description,base_weight,cap_type
+core,STR,Physical power and melee scaling,1.0,soft
+core,DEX,Accuracy evasion attack speed and critical scaling,1.0,soft
+core,CON,Health stamina and physical resistance,1.0,soft
+core,INT,Spell power and magical scaling,1.0,soft
+core,WIS,Healing mana sustain and status resistance,1.0,soft
+core,VIT,Maximum HP and survivability,1.0,soft
+core,SPI,Resource regeneration and aura strength,1.0,soft
+core,LCK,Proc loot and luck-based effects,1.0,soft
+core,WIL,Crowd-control resistance and resolve,1.0,soft
+core,CHA,Threat NPC interaction and leadership,1.0,soft
+sub,PhysicalPower,Physical damage scaling,1.0,soft
+sub,ArmorPenetration,Reduces effective armor,1.0,soft
+sub,AttackSpeed,Reduces attack interval,2.0,hard
+sub,Accuracy,Improves hit chance,1.0,soft
+sub,Evasion,Improves avoidance,1.0,soft
+sub,WeaponHandling,Weapon-specific effectiveness,1.0,soft
+sub,CriticalChance,Critical hit probability,2.5,hard
+sub,CriticalDamage,Critical damage multiplier,2.0,soft
+sub,SpellPower,Magic damage scaling,1.0,soft
+sub,ElementalMastery,Element-specific scaling,1.0,soft
+sub,CastSpeed,Spell execution speed,2.0,hard
+sub,MagicPenetration,Reduces effective magic resistance,1.0,soft
+sub,ManaEfficiency,Reduces resource cost,1.0,hard
+sub,MaxHP,Maximum health pool,0.4,soft
+sub,HPRegen,Health regeneration,0.5,soft
+sub,ShieldStrength,Barrier capacity scaling,0.5,soft
+sub,DamageReduction,Percentage damage mitigation,3.0,hard
+sub,BlockChance,Block probability,1.5,hard
+sub,ParryChance,Parry probability,1.5,hard
+sub,Tenacity,Crowd-control resistance,2.0,hard
+sub,Poise,Stagger resistance,1.0,soft
+combat,BaseDamage,Base outgoing damage,1.0,soft
+combat,SkillDamage,Skill multiplier,1.0,soft
+combat,ComboMultiplier,Combo scaling,1.0,soft
+combat,BackstabMultiplier,Rear attack scaling,1.0,soft
+combat,WeakPointDamage,Weak-point scaling,1.0,soft
+combat,Armor,Physical mitigation,0.75,soft
+combat,MagicResistance,Magical mitigation,0.75,soft
+combat,DodgeChance,Avoidance chance,1.5,hard
+combat,BlockValue,Damage blocked,0.75,soft
+combat,CooldownReduction,Ability cooldown reduction,2.0,hard
+combat,MovementSpeed,Movement rate,1.0,hard
