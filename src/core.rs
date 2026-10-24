@@ -1,12 +1,10 @@
 use serde::{Deserialize, Serialize};
-use std::ops::{Add, AddAssign, Sub};
+use std::ops::{Add, AddAssign, Mul, Sub};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct EntityId(pub u64);
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct TeamId(pub u32);
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct GameTick(pub u64);
 
@@ -21,3 +19,4 @@ impl Vec2 {
 impl Add for Vec2 { type Output=Self; fn add(self,rhs:Self)->Self{Self{x:self.x+rhs.x,y:self.y+rhs.y}} }
 impl AddAssign for Vec2 { fn add_assign(&mut self,rhs:Self){self.x+=rhs.x;self.y+=rhs.y;} }
 impl Sub for Vec2 { type Output=Self; fn sub(self,rhs:Self)->Self{Self{x:self.x-rhs.x,y:self.y-rhs.y}} }
+impl Mul<f32> for Vec2 { type Output=Self; fn mul(self,rhs:f32)->Self{Self{x:self.x*rhs,y:self.y*rhs}} }
