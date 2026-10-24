@@ -1,6 +1,7 @@
 pub mod account;
 pub mod api;
 pub mod environment;
+pub mod language;
 pub mod math;
 pub mod menu;
 pub mod settings;
