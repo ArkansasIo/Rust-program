@@ -1,0 +1,10 @@
+rank,power_multiplier,abilities,min_resistance,ai_role,loot_multiplier
+common,0.60,2,false,brute,1.00
+veteran,1.20,3,true,brute,1.25
+strong,1.50,5,true,controller,1.50
+elite,2.00,6,true,tank,2.00
+named,2.50,8,true,assassin,3.00
+boss,5.00,12,true,boss,5.00
+world_boss,10.00,16,true,boss,10.00
+raid_boss,20.00,20,true,boss,20.00
+mythic_boss,50.00,24,true,boss,50.00
