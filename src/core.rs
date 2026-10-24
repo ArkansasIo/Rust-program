@@ -5,7 +5,7 @@ use std::ops::{Add, AddAssign, Mul, Sub};
 pub struct EntityId(pub u64);
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct TeamId(pub u32);
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct GameTick(pub u64);
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
@@ -14,7 +14,7 @@ impl Vec2 {
     pub const ZERO: Self = Self { x: 0.0, y: 0.0 };
     pub fn distance(self, other: Self) -> f32 { ((self.x-other.x).powi(2)+(self.y-other.y).powi(2)).sqrt() }
     pub fn length(self) -> f32 { self.distance(Self::ZERO) }
-    pub fn normalized(self) -> Self { let l=self.length(); if l==0.0 { Self::ZERO } else { Self{x:self.x/l,y:self.y/l} } }
+    pub fn normalized(self) -> Self { let length=self.length(); if length==0.0 { Self::ZERO } else { Self{x:self.x/length,y:self.y/length} } }
 }
 impl Add for Vec2 { type Output=Self; fn add(self,rhs:Self)->Self{Self{x:self.x+rhs.x,y:self.y+rhs.y}} }
 impl AddAssign for Vec2 { fn add_assign(&mut self,rhs:Self){self.x+=rhs.x;self.y+=rhs.y;} }
