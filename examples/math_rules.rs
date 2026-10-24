@@ -1,5 +1,5 @@
 //! Example of using the expression language for a small rule calculation.
-use rust_environment_api::language::{evaluate, Value};
+use rust_environment_api::language::{Value, evaluate};
 use std::collections::HashMap;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
