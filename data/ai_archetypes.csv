@@ -1,0 +1,14 @@
+id,role,range,priority,behavior,team_support
+brute,Brute,melee,damage,slow_high_damage,false
+assassin,Assassin,melee,backline,stealth_burst,false
+caster,Caster,ranged,damage,spell_rotation,false
+controller,Controller,ranged,control,cc_and_zone,false
+summoner,Summoner,ranged,adds,summon_minions,true
+support,Support,ranged,ally,heal_and_buff,true
+tank,Tank,melee,threat,aggro_and_guard,true
+sniper,Sniper,long,weakpoint,precision_fire,false
+scout,Scout,long,recon,detect_and_mark,false
+healer,Healer,ranged,survival,priority_healing,true
+artillery,Artillery,long,area,heavy_area_damage,false
+swarm,Swarm,melee,overwhelm,group_pressure,true
+commander,Commander,mixed,coordination,ally_orders,true
