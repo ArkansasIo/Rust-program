@@ -1,23 +1,29 @@
-# Rust Environment API
+# Rust Environment + Mathematics API
 
-A reusable Rust library and command-line tool for inspecting the runtime process environment.
+A reusable Rust library and command-line tool for inspecting process environment data and providing checked integer mathematics helpers.
 
 ## Features
 
-- Read and test environment variables.
-- Enumerate environment variables.
-- Read process arguments without assuming Unicode.
-- Inspect current directory, executable path, and temporary directory.
-- Report operating system, platform family, architecture, process ID, and package version.
-- Export a complete environment snapshot as JSON.
-- Cross-platform Cargo project with GitHub Actions CI.
+- Read and enumerate environment variables and inspect process arguments.
+- Inspect the current directory, executable path, temporary directory, OS, architecture, and process ID.
+- Export an environment snapshot as JSON.
+- Account, API application, settings, and nested-menu data models.
+- Integer mathematics helpers: prime testing, even/odd classification, greatest common divisor, and checked arithmetic.
+- Cross-platform GitHub Actions CI.
 
-## Build
+## Build and test
 
 ```bash
 cargo build
 cargo test
 cargo run -- info
+```
+
+Run formatting and lint checks:
+
+```bash
+cargo fmt --all -- --check
+cargo clippy --all-targets --all-features -- -D warnings
 ```
 
 ## CLI
@@ -32,9 +38,20 @@ rust-env executable
 rust-env temp
 rust-env system
 rust-env json
+rust-env account
+rust-env menu
+rust-env settings
+rust-env api
+rust-env api-app
+rust-env math prime 97
+rust-env math classify 42
+rust-env math gcd 54 24
+rust-env math calc mul 6 7
 ```
 
-## Library
+The math calculator uses checked `i64` arithmetic. Division requires an integral result; division by zero, overflow, and unknown operators return an error instead of silently truncating.
+
+## Library example
 
 ```rust
 use rust_environment_api::Environment;
@@ -48,9 +65,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
+Math API details: [`docs/MATHEMATICS.md`](docs/MATHEMATICS.md).
+Development guide: [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
+
 ## Safety note
 
-The API intentionally does not expose environment mutation. Environment mutation can have process-wide concurrency implications on some platforms. For child processes, prefer configuring variables through `std::process::Command`.
+Environment variables may contain credentials. Treat environment snapshots as sensitive and redact secrets before sharing. This library intentionally avoids a public process-environment mutation API. Configure child-process variables using `std::process::Command`.
 
 ## Repository
 
