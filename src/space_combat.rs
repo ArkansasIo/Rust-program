@@ -1,0 +1,6 @@
+use serde::{Deserialize, Serialize};
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)] pub enum SpaceDamageType { Laser, Plasma, Railgun, Missile, Ion, Particle }
+#[derive(Clone, Debug, Serialize, Deserialize)] pub struct SpaceAttack { pub damage_type: SpaceDamageType, pub weapon_damage: f32, pub accuracy: f32, pub crit_chance: f32, pub shield_penetration: f32, pub armor_penetration: f32 }
+#[derive(Clone, Debug, Serialize, Deserialize)] pub struct SpaceTarget { pub evasion: f32, pub shields: f32, pub armor: f32 }
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)] pub struct SpaceCombatResult { pub hit: bool, pub critical: bool, pub damage: f32 }
+pub fn resolve_attack(a: SpaceAttack, t: SpaceTarget, tech: f32, commander: f32, roll: f32) -> SpaceCombatResult { let chance=(a.accuracy/(a.accuracy+t.evasion).max(0.001)).clamp(0.0,1.0); if roll>chance { return SpaceCombatResult::default(); } let crit=roll < a.crit_chance.clamp(0.0,1.0); let raw=a.weapon_damage*tech.max(0.0)*commander.max(0.0)*(if crit {1.5}else{1.0}); let shield=(t.shields*(1.0-a.shield_penetration.clamp(0.0,1.0))).max(0.0); let remaining=(raw-shield).max(0.0); let damage=remaining*(1.0-t.armor.clamp(0.0,0.95)); SpaceCombatResult{hit:true,critical:crit,damage} }
