@@ -1,98 +1,43 @@
-# Rust Environment + Mathematics API
+# Rust Battle Engine
 
-A reusable Rust library and command-line tool for inspecting process environment data, checked integer mathematics, and a small expression-language foundation for a future math programming environment.
+A modular Rust combat and battle-game engine for RPG/MMORPG projects. The repository has been repurposed from the previous mathematics/environment API into a gameplay foundation.
 
-## Features
+## Engine modules
 
-- Read and enumerate environment variables and inspect process arguments.
-- Inspect the current directory, executable path, temporary directory, OS, architecture, and process ID.
-- Export an environment snapshot as JSON.
-- Account, API application, settings, and nested-menu data models.
-- Integer mathematics helpers: prime testing, even/odd classification, greatest common divisor, and checked arithmetic.
-- Expression evaluator for integer/boolean values, variables, arithmetic, comparisons, and boolean operators.
-- Cross-platform GitHub Actions CI.
+- `core` — entity IDs, teams, ticks, vectors.
+- `entities` — combatant state and runtime actors.
+- `stats` — RPG attributes, resources, armor, resistance, critical hits, attack and movement stats.
+- `combat` — damage calculation, mitigation, critical attacks, damage types, death handling.
+- `abilities` — skills, range checks, resource costs, cooldowns.
+- `ai` — target selection and basic idle/chase/attack state machine.
+- `battle` — deterministic battle loop and victory detection.
+- `engine` — top-level battle orchestration.
+- `world` — entity storage, ticks, and spatial queries.
+- `physics` — movement and range primitives.
+- `items` / `inventory` — item definitions, weapons, armor, consumables, equipment.
+- `loot` — deterministic weighted loot tables.
+- `progression` — XP, levels, and skill points.
+- `events` — combat/game event bus.
 
-## Build and test
+## Example
 
 ```bash
-cargo build
+cargo run
 cargo test
-cargo run -- info
-cargo run --example math_rules
 ```
 
-Run formatting and lint checks:
+The executable runs a small Knight-versus-Goblin battle using the same public engine APIs intended for larger games.
 
-```bash
-cargo fmt --all -- --check
-cargo clippy --all-targets --all-features -- -D warnings
-```
+## Combat pipeline
 
-## CLI
+`Input/AI -> Target Selection -> Range Check -> Ability/Attack -> Damage Calculation -> Mitigation -> Resource Update -> Death -> Event Bus -> Battle Result`
 
-```text
-rust-env info
-rust-env vars
-rust-env get PATH
-rust-env args
-rust-env cwd
-rust-env executable
-rust-env temp
-rust-env system
-rust-env json
-rust-env account
-rust-env menu
-rust-env settings
-rust-env api
-rust-env api-app
-rust-env math prime 97
-rust-env math classify 42
-rust-env math gcd 54 24
-rust-env math calc mul 6 7
-```
+The architecture is intentionally data-driven so abilities, items, stats, enemies, encounters, and battle rules can later be loaded from JSON, TOML, databases, or a game-server API.
 
-The existing math CLI uses checked `i64` arithmetic. Division requires an integral result; division by zero, overflow, and unknown operators return an error instead of silently truncating.
+## Planned engine layers
 
-## Expression language library
+The next engine layers are behavior-tree AI, status effects and crowd control, aggro/threat, equipment stat modifiers, quests, crafting, dungeon/raid encounters, PvP rules, deterministic replays, save/load, networking, and dedicated-server simulation.
 
-```rust
-use rust_environment_api::language::{evaluate, Value};
-use std::collections::HashMap;
+## License
 
-let variables = HashMap::from([
-    ("level".to_owned(), Value::Integer(12)),
-    ("active".to_owned(), Value::Boolean(true)),
-]);
-assert_eq!(
-    evaluate("level >= 10 && active", &variables),
-    Ok(Value::Boolean(true))
-);
-```
-
-Supported expressions include arithmetic (`+ - * / %`), parentheses, integer and boolean literals, caller-supplied variables, comparisons (`< <= > >= == !=`), and boolean logic (`! && ||`). Integers use checked 64-bit operations; division is integer-only. The evaluator is deliberately pure and bounded; it is not yet a full scripting language, a general-purpose IDE, or a security sandbox. See `docs/LANGUAGE_AND_IDE.md` for the implementation roadmap and limitations.
-
-## Library example
-
-```rust
-use rust_environment_api::Environment;
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("OS: {}", Environment::system().os);
-    println!("PATH: {:?}", Environment::get("PATH"));
-    println!("Executable: {}", Environment::executable()?.display());
-    println!("Working directory: {}", Environment::current_dir()?.display());
-    Ok(())
-}
-```
-
-Math API details: [`docs/MATHEMATICS.md`](docs/MATHEMATICS.md).
-Language and IDE roadmap: [`docs/LANGUAGE_AND_IDE.md`](docs/LANGUAGE_AND_IDE.md).
-Development guide: [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
-
-## Safety note
-
-Environment variables may contain credentials. Treat environment snapshots as sensitive and redact secrets before sharing. This library intentionally avoids a public process-environment mutation API. Configure child-process variables using `std::process::Command`.
-
-## Repository
-
-https://github.com/ArkansasIo/Rust-program
+MIT
