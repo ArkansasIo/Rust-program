@@ -1,4 +1,6 @@
 use rust_battle_engine::{
+    boss_runtime::{BossPhase, BossState},
+    content_loader::{parse_csv, require_column},
     core::{EntityId, TeamId, Vec2},
     formulas,
     matchmaking::{MatchMode, MatchRequest, MatchmakingQueue},
@@ -11,7 +13,7 @@ fn vector_math_is_deterministic() {
     let a = Vec2 { x: 0.0, y: 0.0 };
     let b = Vec2 { x: 3.0, y: 4.0 };
     assert_eq!(a.distance(b), 5.0);
-    assert_eq!(b.normalized().length(), 1.0);
+    assert!((b.normalized().length() - 1.0).abs() < f32::EPSILON);
 }
 
 #[test]
@@ -49,6 +51,27 @@ fn runtime_advances_ticks_and_tracks_dropped_ticks() {
     assert_eq!(runtime.tick.0, 2);
     assert_eq!(runtime.metrics.ticks, 2);
     assert_eq!(runtime.metrics.dropped_ticks, 3);
+}
+
+#[test]
+fn boss_transitions_to_lower_health_phase() {
+    let phases = vec![
+        BossPhase { phase: 1, health_threshold: 1.0, damage_multiplier: 1.0, adds: 0, mechanic: "standard".into(), arena_modifier: "none".into() },
+        BossPhase { phase: 2, health_threshold: 0.5, damage_multiplier: 1.2, adds: 2, mechanic: "enrage".into(), arena_modifier: "hazard".into() },
+    ];
+    let mut boss = BossState::new(100.0, phases);
+    assert_eq!(boss.apply_damage(60.0), 60.0);
+    let phase = boss.update_phase().expect("phase transition");
+    assert_eq!(phase.phase, 2);
+    assert!(!boss.defeated());
+}
+
+#[test]
+fn csv_loader_validates_columns() {
+    let rows = parse_csv("id,role\nbrute,damage\nhealer,support").unwrap();
+    assert_eq!(rows.len(), 2);
+    assert_eq!(require_column(&rows[0], "role").unwrap(), "damage");
+    assert!(require_column(&rows[0], "missing").is_err());
 }
 
 #[test]
