@@ -1,0 +1,15 @@
+id,category,power,mass,heat,tech_tier
+laser,weapon,100,10,5,1
+plasma,weapon,160,14,12,2
+railgun,weapon,190,20,8,2
+missile,weapon,175,12,10,2
+ion_cannon,weapon,220,24,15,3
+particle_beam,weapon,300,30,22,4
+armor,defense,120,25,0,1
+energy_shield,defense,180,18,10,2
+point_defense,defense,140,12,8,2
+reactor,system,200,30,-30,1
+sensors,system,80,8,2,1
+engines,system,130,20,6,1
+ai_core,system,240,12,10,3
+targeting_computer,system,150,9,4,2
