@@ -1,0 +1,11 @@
+id,name,category,description
+STR,Strength,core,Physical power and melee scaling
+DEX,Dexterity,core,Accuracy speed evasion and critical scaling
+CON,Constitution,core,Health stamina and resistance
+INT,Intelligence,core,Spell power and magic scaling
+WIS,Wisdom,core,Healing mana efficiency and status resistance
+VIT,Vitality,core,Maximum health and survivability
+SPI,Spirit,core,Resource regeneration and aura strength
+LCK,Luck,core,Drop and proc variance
+WIL,Willpower,core,Crowd control resistance and resolve
+CHA,Charisma,core,Threat leadership and social modifiers
