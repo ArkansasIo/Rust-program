@@ -1,0 +1,34 @@
+[combat]
+armor_k = 100.0
+max_damage_reduction = 0.70
+pvp_crit_cap = 0.40
+pve_crit_cap = 0.70
+pvp_cdr_cap = 0.35
+pve_cdr_cap = 0.60
+pvp_healing_bonus_cap = 0.50
+
+[cc_diminishing_returns]
+first = 1.0
+second = 0.50
+third = 0.25
+fourth = 0.0
+
+[pve]
+party_hp_multiplier = 0.65
+boss_level_scaling = 0.18
+
+[pvp]
+damage_multiplier = 0.70
+crit_chance_multiplier = 0.50
+crit_damage_multiplier = 0.60
+healing_multiplier = 0.65
+cdr_multiplier = 0.50
+cc_duration_multiplier = 0.40
+
+[rarity]
+common = 1.0
+uncommon = 1.15
+rare = 1.35
+epic = 1.65
+legendary = 2.10
+mythic = 2.75
