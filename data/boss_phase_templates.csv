@@ -1,0 +1,5 @@
+id,trigger,phase,mechanic,adds,damage_modifier,arena_modifier
+boss_phase_1,hp_100,1,standard,0,1.0,none
+boss_phase_2,hp_75,2,enrage,2,1.10,none
+boss_phase_3,hp_50,3,environment,3,1.20,hazard
+boss_phase_4,hp_25,4,ultimate,4,1.35,collapse
