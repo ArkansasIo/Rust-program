@@ -3,7 +3,12 @@ use serde::Serialize;
 
 /// Classification of an integer.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
-pub struct IntegerClassification { pub value: i64, pub is_even: bool, pub is_odd: bool, pub is_prime: bool }
+pub struct IntegerClassification {
+    pub value: i64,
+    pub is_even: bool,
+    pub is_odd: bool,
+    pub is_prime: bool,
+}
 
 /// Return whether an integer is prime. Values below two are not prime.
 pub fn is_prime(value: i64) -> bool {
@@ -50,17 +55,31 @@ pub fn checked_integer_operation(op: &str, a: i64, b: i64) -> Option<i64> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test] fn prime_and_parity_edges() {
-        assert!(!is_prime(i64::MIN)); assert!(!is_prime(-7)); assert!(!is_prime(0));
-        assert!(!is_prime(1)); assert!(is_prime(2)); assert!(is_prime(97)); assert!(!is_prime(99));
-        assert!(classify_integer(8).is_even); assert!(classify_integer(9).is_odd);
+
+    #[test]
+    fn prime_and_parity_edges() {
+        assert!(!is_prime(i64::MIN));
+        assert!(!is_prime(-7));
+        assert!(!is_prime(0));
+        assert!(!is_prime(1));
+        assert!(is_prime(2));
+        assert!(is_prime(97));
+        assert!(!is_prime(99));
+        assert!(classify_integer(8).is_even);
+        assert!(classify_integer(9).is_odd);
     }
-    #[test] fn gcd_handles_zero_and_negative_values() {
-        assert_eq!(gcd(54, 24), Some(6)); assert_eq!(gcd(-54, 24), Some(6));
-        assert_eq!(gcd(0, 7), Some(7)); assert_eq!(gcd(0, 0), Some(0));
+
+    #[test]
+    fn gcd_handles_zero_and_negative_values() {
+        assert_eq!(gcd(54, 24), Some(6));
+        assert_eq!(gcd(-54, 24), Some(6));
+        assert_eq!(gcd(0, 7), Some(7));
+        assert_eq!(gcd(0, 0), Some(0));
         assert_eq!(gcd(i64::MIN, 1), None);
     }
-    #[test] fn checked_arithmetic_rejects_invalid_results() {
+
+    #[test]
+    fn checked_arithmetic_rejects_invalid_results() {
         assert_eq!(checked_integer_operation("add", 2, 3), Some(5));
         assert_eq!(checked_integer_operation("*", 7, 6), Some(42));
         assert_eq!(checked_integer_operation("div", 9, 2), None);
