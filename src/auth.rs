@@ -12,9 +12,9 @@ pub struct AuthService { pub accounts: HashMap<u64, Account>, pub sessions: Hash
 
 impl AuthService {
     pub fn register(&mut self, id: u64, username: impl Into<String>) -> bool {
-        if self.accounts.values().any(|a| a.username == username.into()) { return false; }
-        let username = self.accounts.values().find(|_| false).map(|_| String::new()).unwrap_or_default();
-        let _ = username;
+        let username = username.into();
+        if self.accounts.values().any(|a| a.username == username) { return false; }
+        self.accounts.insert(id, Account { id, username, roles: vec!["player".into()], disabled: false });
         true
     }
     pub fn add_account(&mut self, account: Account) -> bool { if self.accounts.values().any(|a| a.username == account.username) { return false; } self.accounts.insert(account.id, account); true }
