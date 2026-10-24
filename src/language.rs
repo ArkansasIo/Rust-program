@@ -28,10 +28,7 @@ pub struct EvalError {
 
 impl EvalError {
     fn new(message: impl Into<String>, offset: usize) -> Self {
-        Self {
-            message: message.into(),
-            offset,
-        }
+        Self { message: message.into(), offset }
     }
 }
 
@@ -93,21 +90,15 @@ fn tokenize(source: &str) -> Result<Vec<Token>, EvalError> {
                 i += 1;
             }
             let raw = &source[start..i];
-            let value = raw
-                .parse::<i64>()
+            let value = raw.parse::<i64>()
                 .map_err(|_| EvalError::new("integer literal is out of range", start))?;
-            tokens.push(Token {
-                kind: TokenKind::Integer(value),
-                offset: start,
-            });
+            tokens.push(Token { kind: TokenKind::Integer(value), offset: start });
             continue;
         }
 
         if byte.is_ascii_alphabetic() || byte == b'_' {
             i += 1;
-            while i < bytes.len()
-                && (bytes[i].is_ascii_alphanumeric() || bytes[i] == b'_')
-            {
+            while i < bytes.len() && (bytes[i].is_ascii_alphanumeric() || bytes[i] == b'_') {
                 i += 1;
             }
             let raw = &source[start..i];
@@ -120,11 +111,7 @@ fn tokenize(source: &str) -> Result<Vec<Token>, EvalError> {
             continue;
         }
 
-        let pair = if i + 1 < bytes.len() {
-            &source[i..i + 2]
-        } else {
-            ""
-        };
+        let pair = if i + 1 < bytes.len() { &source[i..i + 2] } else { "" };
         let (kind, width) = match pair {
             "==" => (Some(TokenKind::EqualEqual), 2),
             "!=" => (Some(TokenKind::BangEqual), 2),
@@ -156,35 +143,22 @@ fn tokenize(source: &str) -> Result<Vec<Token>, EvalError> {
                 i += width;
             }
             None => {
-                return Err(EvalError::new(
-                    format!("unexpected character '{}'", byte as char),
-                    i,
-                ));
+                return Err(EvalError::new(format!("unexpected character '{}'", byte as char), i));
             }
         }
     }
 
-    tokens.push(Token {
-        kind: TokenKind::End,
-        offset: source.len(),
-    });
+    tokens.push(Token { kind: TokenKind::End, offset: source.len() });
     Ok(tokens)
 }
 
 /// Evaluate one expression using explicitly supplied integer/boolean variables.
 pub fn evaluate(source: &str, variables: &HashMap<String, Value>) -> Result<Value, EvalError> {
     let tokens = tokenize(source)?;
-    let mut parser = Parser {
-        tokens,
-        current: 0,
-        variables,
-    };
+    let mut parser = Parser { tokens, current: 0, variables };
     let result = parser.parse_or()?;
     if !matches!(parser.peek().kind, TokenKind::End) {
-        return Err(EvalError::new(
-            "unexpected token after expression",
-            parser.peek().offset,
-        ));
+        return Err(EvalError::new("unexpected token after expression", parser.peek().offset));
     }
     Ok(result)
 }
@@ -239,22 +213,14 @@ impl Parser<'_> {
     fn parse_equality(&mut self) -> Result<Value, EvalError> {
         let mut left = self.parse_comparison()?;
         loop {
-            let op = if self
-                .matches(|k| matches!(k, TokenKind::EqualEqual))
-                .is_some()
-            {
+            let op = if self.matches(|k| matches!(k, TokenKind::EqualEqual)).is_some() {
                 Some(true)
-            } else if self
-                .matches(|k| matches!(k, TokenKind::BangEqual))
-                .is_some()
-            {
+            } else if self.matches(|k| matches!(k, TokenKind::BangEqual)).is_some() {
                 Some(false)
             } else {
                 None
             };
-            let Some(equal) = op else {
-                break;
-            };
+            let Some(equal) = op else { break };
             let right = self.parse_comparison()?;
             let same = left == right;
             left = Value::Boolean(if equal { same } else { !same });
@@ -267,24 +233,16 @@ impl Parser<'_> {
         loop {
             let op = if self.matches(|k| matches!(k, TokenKind::Less)).is_some() {
                 Some(0)
-            } else if self
-                .matches(|k| matches!(k, TokenKind::LessEqual))
-                .is_some()
-            {
+            } else if self.matches(|k| matches!(k, TokenKind::LessEqual)).is_some() {
                 Some(1)
             } else if self.matches(|k| matches!(k, TokenKind::Greater)).is_some() {
                 Some(2)
-            } else if self
-                .matches(|k| matches!(k, TokenKind::GreaterEqual))
-                .is_some()
-            {
+            } else if self.matches(|k| matches!(k, TokenKind::GreaterEqual)).is_some() {
                 Some(3)
             } else {
                 None
             };
-            let Some(op) = op else {
-                break;
-            };
+            let Some(op) = op else { break };
             let offset = self.peek().offset;
             let right = self.parse_term()?;
             let (a, b) = (as_int(left, offset)?, as_int(right, offset)?);
@@ -308,18 +266,12 @@ impl Parser<'_> {
             } else {
                 None
             };
-            let Some(add) = op else {
-                break;
-            };
+            let Some(add) = op else { break };
             let offset = self.peek().offset;
             let right = self.parse_factor()?;
             let (a, b) = (as_int(left, offset)?, as_int(right, offset)?);
-            let value = if add {
-                a.checked_add(b)
-            } else {
-                a.checked_sub(b)
-            }
-            .ok_or_else(|| EvalError::new("integer overflow", offset))?;
+            let value = if add { a.checked_add(b) } else { a.checked_sub(b) }
+                .ok_or_else(|| EvalError::new("integer overflow", offset))?;
             left = Value::Integer(value);
         }
         Ok(left)
@@ -337,25 +289,19 @@ impl Parser<'_> {
             } else {
                 None
             };
-            let Some(op) = op else {
-                break;
-            };
+            let Some(op) = op else { break };
             let offset = self.peek().offset;
             let right = self.parse_unary()?;
             let (a, b) = (as_int(left, offset)?, as_int(right, offset)?);
             let value = match op {
                 0 => a.checked_mul(b),
-                1 => a
-                    .checked_div(b)
-                    .filter(|_| b != 0 && a.checked_rem(b) == Some(0)),
+                1 => a.checked_div(b).filter(|_| b != 0 && a.checked_rem(b) == Some(0)),
                 _ => a.checked_rem(b).filter(|_| b != 0),
             }
-            .ok_or_else(|| {
-                EvalError::new(
-                    "invalid arithmetic operation, non-integral division, or overflow",
-                    offset,
-                )
-            })?;
+            .ok_or_else(|| EvalError::new(
+                "invalid arithmetic operation, non-integral division, or overflow",
+                offset,
+            ))?;
             left = Value::Integer(value);
         }
         Ok(left)
@@ -363,16 +309,11 @@ impl Parser<'_> {
 
     fn parse_unary(&mut self) -> Result<Value, EvalError> {
         if let Some(token) = self.matches(|k| matches!(k, TokenKind::Bang)) {
-            return Ok(Value::Boolean(!as_bool(
-                self.parse_unary()?,
-                token.offset,
-            )?));
+            return Ok(Value::Boolean(!as_bool(self.parse_unary()?, token.offset)?));
         }
         if let Some(token) = self.matches(|k| matches!(k, TokenKind::Minus)) {
             let value = as_int(self.parse_unary()?, token.offset)?;
-            return value
-                .checked_neg()
-                .map(Value::Integer)
+            return value.checked_neg().map(Value::Integer)
                 .ok_or_else(|| EvalError::new("integer overflow", token.offset));
         }
         self.parse_primary()
@@ -384,15 +325,11 @@ impl Parser<'_> {
             TokenKind::Integer(value) => Ok(Value::Integer(value)),
             TokenKind::True => Ok(Value::Boolean(true)),
             TokenKind::False => Ok(Value::Boolean(false)),
-            TokenKind::Identifier(name) => self.variables.get(&name).cloned().ok_or_else(|| {
-                EvalError::new(format!("unknown variable '{name}'"), token.offset)
-            }),
+            TokenKind::Identifier(name) => self.variables.get(&name).cloned()
+                .ok_or_else(|| EvalError::new(format!("unknown variable '{name}'"), token.offset)),
             TokenKind::LeftParen => {
                 let value = self.parse_or()?;
-                if self
-                    .matches(|k| matches!(k, TokenKind::RightParen))
-                    .is_none()
-                {
+                if self.matches(|k| matches!(k, TokenKind::RightParen)).is_none() {
                     return Err(EvalError::new("expected ')'", self.peek().offset));
                 }
                 Ok(value)
@@ -426,10 +363,7 @@ mod tests {
     #[test]
     fn evaluates_precedence_and_parentheses() {
         let vars = HashMap::new();
-        assert_eq!(
-            evaluate("2 + 3 * (4 - 1)", &vars),
-            Ok(Value::Integer(11))
-        );
+        assert_eq!(evaluate("2 + 3 * (4 - 1)", &vars), Ok(Value::Integer(11)));
     }
 
     #[test]
