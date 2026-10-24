@@ -12,6 +12,13 @@ pub struct Settings {
 
 impl Default for Settings {
     fn default() -> Self {
-        Self { language: "en".into(), theme: "system".into(), notifications: true, telemetry: false, developer_mode: false, api_enabled: true }
+        Self {
+            language: "en".into(),
+            theme: "system".into(),
+            notifications: true,
+            telemetry: false,
+            developer_mode: false,
+            api_enabled: true,
+        }
     }
 }
