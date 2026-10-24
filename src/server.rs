@@ -1,8 +1,8 @@
 use crate::events::{EventBus, GameEvent};
-use crate::instance::InstanceManager;
 use crate::network::{ClientMessage, Packet, ServerMessage};
-use crate::shard::ShardManager;
 use crate::runtime::{GameRuntime, RuntimeConfig};
+use crate::shard::ShardManager;
+use crate::instance::InstanceManager;
 
 #[derive(Debug, Default)]
 pub struct ServerMetrics { pub packets_received: u64, pub packets_rejected: u64, pub ticks: u64 }
@@ -14,7 +14,7 @@ impl Default for GameServer { fn default() -> Self { Self::new() } }
 
 impl GameServer {
     pub fn new() -> Self { Self { runtime: GameRuntime::new(RuntimeConfig::default()), shards: ShardManager::default(), instances: InstanceManager::default(), events: EventBus::default(), metrics: ServerMetrics::default() } }
-    pub fn tick(&mut self) { self.runtime.step(&mut self.instances, &mut self.shards, &mut self.events); self.metrics.ticks += 1; }
+    pub fn tick(&mut self) { self.runtime.step(); self.metrics.ticks += 1; }
     pub fn handle_packet(&mut self, packet: Packet) -> Option<ServerMessage> {
         self.metrics.packets_received += 1;
         match packet.message {
