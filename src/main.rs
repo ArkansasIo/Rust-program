@@ -10,12 +10,17 @@ fn print_help() {
     println!();
     println!("Core: info | vars | get <NAME> | args | cwd | executable | temp | system | json");
     println!("Application: account | menu | settings | api | api-app");
-    println!("Math: math prime <N> | math classify <N> | math gcd <A> <B> | math calc <OP> <A> <B>");
+    println!(
+        "Math: math prime <N> | math classify <N> | math gcd <A> <B> | math calc <OP> <A> <B>"
+    );
     println!("Use `rust-env help` for this command list.");
 }
 
 fn parse_i64(value: Option<std::ffi::OsString>, usage: &str) -> i64 {
-    match value.and_then(|v| v.into_string().ok()).and_then(|v| i64::from_str(&v).ok()) {
+    match value
+        .and_then(|v| v.into_string().ok())
+        .and_then(|v| i64::from_str(&v).ok())
+    {
         Some(v) => v,
         None => {
             eprintln!("Invalid or missing integer. Usage: {usage}");
@@ -26,7 +31,10 @@ fn parse_i64(value: Option<std::ffi::OsString>, usage: &str) -> i64 {
 
 fn run_math(args: &mut impl Iterator<Item = std::ffi::OsString>) {
     use rust_environment_api::math::{checked_integer_operation, classify_integer, gcd, is_prime};
-    let action = args.next().and_then(|v| v.into_string().ok()).unwrap_or_default();
+    let action = args
+        .next()
+        .and_then(|v| v.into_string().ok())
+        .unwrap_or_default();
     match action.as_str() {
         "prime" => {
             let n = parse_i64(args.next(), "rust-env math prime <N>");
@@ -52,13 +60,18 @@ fn run_math(args: &mut impl Iterator<Item = std::ffi::OsString>) {
             }
         }
         "calc" => {
-            let op = args.next().and_then(|v| v.into_string().ok()).unwrap_or_default();
+            let op = args
+                .next()
+                .and_then(|v| v.into_string().ok())
+                .unwrap_or_default();
             let a = parse_i64(args.next(), "rust-env math calc <OP> <A> <B>");
             let b = parse_i64(args.next(), "rust-env math calc <OP> <A> <B>");
             match checked_integer_operation(&op, a, b) {
                 Some(value) => println!("{value}"),
                 None => {
-                    eprintln!("Invalid operation or result: check operator, division by zero, integer division, and overflow.");
+                    eprintln!(
+                        "Invalid operation or result: check operator, division by zero, integer division, and overflow."
+                    );
                     std::process::exit(1);
                 }
             }
@@ -92,7 +105,10 @@ fn main() {
             println!("Process ID:     {}", s.process_id);
             println!("Executable:     {}", s.executable);
             println!("Working Dir:    {cwd}");
-            println!("Environment:    {} variables", Environment::variables().len());
+            println!(
+                "Environment:    {} variables",
+                Environment::variables().len()
+            );
         }
         "vars" => {
             for (key, value) in Environment::variables() {
@@ -113,7 +129,11 @@ fn main() {
             }
         },
         "args" => {
-            for (i, value) in Environment::arguments().to_lossy_strings().iter().enumerate() {
+            for (i, value) in Environment::arguments()
+                .to_lossy_strings()
+                .iter()
+                .enumerate()
+            {
                 println!("[{i}] {value}");
             }
         }
@@ -152,7 +172,10 @@ fn main() {
                 .unwrap()
         ),
         "menu" => println!("{}", serde_json::to_string_pretty(&default_menu()).unwrap()),
-        "settings" => println!("{}", serde_json::to_string_pretty(&Settings::default()).unwrap()),
+        "settings" => println!(
+            "{}",
+            serde_json::to_string_pretty(&Settings::default()).unwrap()
+        ),
         "api" => println!(
             "{}",
             serde_json::to_string_pretty(&ApiApplicationConfig::default()).unwrap()
