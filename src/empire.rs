@@ -1,0 +1,5 @@
+use serde::{Deserialize, Serialize};
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)] pub struct EmpireAttributes { pub industry: f32, pub science: f32, pub economy: f32, pub influence: f32, pub logistics: f32, pub intelligence: f32, pub stability: f32 }
+#[derive(Clone, Debug, Default, Serialize, Deserialize)] pub struct EmpireResources { pub credits: f64, pub minerals: f64, pub gas: f64, pub energy: f64, pub data: f64, pub dark_matter: f64, pub antimatter: f64, pub nanites: f64, pub quantum_cores: f64, pub artifacts: f64 }
+#[derive(Clone, Debug, Serialize, Deserialize)] pub struct Empire { pub id: String, pub name: String, pub faction_id: String, pub attributes: EmpireAttributes, pub resources: EmpireResources, pub territory: Vec<String>, pub research: Vec<String>, pub diplomacy: Vec<String> }
+impl Empire { pub fn strategic_power(&self) -> f32 { self.attributes.industry + self.attributes.science + self.attributes.economy + self.attributes.influence + self.attributes.logistics + self.attributes.intelligence + self.attributes.stability } }
