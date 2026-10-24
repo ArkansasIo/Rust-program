@@ -20,14 +20,20 @@ fn current_directory_is_available() {
 #[test]
 fn environment_lookup_works() {
     let key = "RUST_ENVIRONMENT_API_TEST";
-    unsafe { std::env::set_var(key, "ok"); }
+    unsafe {
+        std::env::set_var(key, "ok");
+    }
     assert_eq!(Environment::get(key).unwrap(), "ok");
-    unsafe { std::env::remove_var(key); }
+    unsafe {
+        std::env::remove_var(key);
+    }
 }
 
 #[test]
 fn snapshot_serializes() {
     let snapshot = Environment::snapshot().expect("snapshot should collect");
-    let json = snapshot.to_json_pretty().expect("snapshot should serialize");
+    let json = snapshot
+        .to_json_pretty()
+        .expect("snapshot should serialize");
     assert!(json.contains("current_directory"));
 }
