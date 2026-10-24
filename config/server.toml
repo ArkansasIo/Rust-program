@@ -1,0 +1,21 @@
+[server]
+name = "rust-battle-world"
+tick_rate = 20
+max_players = 5000
+save_interval_ticks = 600
+
+[network]
+transport = "abstract"
+max_packet_size = 65535
+
+[world]
+default_shard = "realm-1"
+starting_zone = "starter"
+
+[security]
+rate_limit_per_window = 30
+rate_limit_window_ticks = 20
+
+[persistence]
+provider = "memory"
+# Production adapters can use mysql, postgres, redis, or another implementation.
