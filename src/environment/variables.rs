@@ -1,5 +1,5 @@
-use std::ffi::{OsStr, OsString};
 use super::errors::EnvironmentError;
+use std::ffi::{OsStr, OsString};
 
 pub fn get(key: &str) -> Result<String, EnvironmentError> {
     Ok(std::env::var(key)?)
