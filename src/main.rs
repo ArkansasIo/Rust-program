@@ -1,4 +1,6 @@
-use rust_environment_api::{default_menu, Account, ApiApplication, ApiApplicationConfig, Environment, Settings};
+use rust_environment_api::{
+    Account, ApiApplication, ApiApplicationConfig, Environment, Settings, default_menu,
+};
 use std::str::FromStr;
 
 fn print_help() {
@@ -15,7 +17,10 @@ fn print_help() {
 fn parse_i64(value: Option<std::ffi::OsString>, usage: &str) -> i64 {
     match value.and_then(|v| v.into_string().ok()).and_then(|v| i64::from_str(&v).ok()) {
         Some(v) => v,
-        None => { eprintln!("Invalid or missing integer. Usage: {usage}"); std::process::exit(2); }
+        None => {
+            eprintln!("Invalid or missing integer. Usage: {usage}");
+            std::process::exit(2);
+        }
     }
 }
 
@@ -34,27 +39,47 @@ fn run_math(args: &mut impl Iterator<Item = std::ffi::OsString>) {
         "gcd" => {
             let a = parse_i64(args.next(), "rust-env math gcd <A> <B>");
             let b = parse_i64(args.next(), "rust-env math gcd <A> <B>");
-            match gcd(a, b) { Some(value) => println!("{value}"), None => { eprintln!("Cannot represent absolute magnitude of i64::MIN."); std::process::exit(1); } }
+            match gcd(a, b) {
+                Some(value) => println!("{value}"),
+                None => {
+                    eprintln!("Cannot represent absolute magnitude of i64::MIN.");
+                    std::process::exit(1);
+                }
+            }
         }
         "calc" => {
             let op = args.next().and_then(|v| v.into_string().ok()).unwrap_or_default();
             let a = parse_i64(args.next(), "rust-env math calc <OP> <A> <B>");
             let b = parse_i64(args.next(), "rust-env math calc <OP> <A> <B>");
-            match checked_integer_operation(&op, a, b) { Some(value) => println!("{value}"), None => { eprintln!("Invalid operation or result: check the operator, division by zero, integer division, and overflow."); std::process::exit(1); } }
+            match checked_integer_operation(&op, a, b) {
+                Some(value) => println!("{value}"),
+                None => {
+                    eprintln!("Invalid operation or result: check operator, division by zero, integer division, and overflow.");
+                    std::process::exit(1);
+                }
+            }
         }
-        _ => { eprintln!("Usage: rust-env math <prime|classify|gcd|calc> ..."); std::process::exit(2); }
+        _ => {
+            eprintln!("Usage: rust-env math <prime|classify|gcd|calc> ...");
+            std::process::exit(2);
+        }
     }
 }
 
 fn main() {
     let mut args = std::env::args_os();
     let _program = args.next();
-    let command = args.next().and_then(|v| v.into_string().ok()).unwrap_or_else(|| "info".into());
+    let command = args
+        .next()
+        .and_then(|v| v.into_string().ok())
+        .unwrap_or_else(|| "info".into());
 
     match command.as_str() {
         "info" => {
             let s = Environment::system();
-            let cwd = Environment::current_dir().map(|p| p.display().to_string()).unwrap_or_else(|e| e.to_string());
+            let cwd = Environment::current_dir()
+                .map(|p| p.display().to_string())
+                .unwrap_or_else(|e| e.to_string());
             println!("Rust Environment API");
             println!("--------------------");
             println!("OS:             {}", s.os);
@@ -65,18 +90,63 @@ fn main() {
             println!("Working Dir:    {cwd}");
             println!("Environment:    {} variables", Environment::variables().len());
         }
-        "vars" => for (key, value) in Environment::variables() { println!("{key}={value}"); },
+        "vars" => {
+            for (key, value) in Environment::variables() {
+                println!("{key}={value}");
+            }
+        }
         "get" => match args.next().and_then(|v| v.into_string().ok()) {
-            Some(key) => match Environment::get(&key) { Ok(v) => println!("{v}"), Err(e) => { eprintln!("{e}"); std::process::exit(1); } },
-            None => { eprintln!("Usage: rust-env get <NAME>"); std::process::exit(2); }
+            Some(key) => match Environment::get(&key) {
+                Ok(v) => println!("{v}"),
+                Err(e) => {
+                    eprintln!("{e}");
+                    std::process::exit(1);
+                }
+            },
+            None => {
+                eprintln!("Usage: rust-env get <NAME>");
+                std::process::exit(2);
+            }
         },
-        "args" => for (i, value) in Environment::arguments().to_lossy_strings().iter().enumerate() { println!("[{i}] {value}"); },
-        "cwd" => match Environment::current_dir() { Ok(v) => println!("{}", v.display()), Err(e) => { eprintln!("{e}"); std::process::exit(1); } },
-        "executable" => match Environment::executable() { Ok(v) => println!("{}", v.display()), Err(e) => { eprintln!("{e}"); std::process::exit(1); } },
+        "args" => {
+            for (i, value) in Environment::arguments().to_lossy_strings().iter().enumerate() {
+                println!("[{i}] {value}");
+            }
+        }
+        "cwd" => match Environment::current_dir() {
+            Ok(v) => println!("{}", v.display()),
+            Err(e) => {
+                eprintln!("{e}");
+                std::process::exit(1);
+            }
+        },
+        "executable" => match Environment::executable() {
+            Ok(v) => println!("{}", v.display()),
+            Err(e) => {
+                eprintln!("{e}");
+                std::process::exit(1);
+            }
+        },
         "temp" => println!("{}", Environment::temp_dir().display()),
-        "system" => match serde_json::to_string_pretty(&Environment::system()) { Ok(v) => println!("{v}"), Err(e) => { eprintln!("{e}"); std::process::exit(1); } },
-        "json" => match Environment::snapshot().and_then(|s| s.to_json_pretty()) { Ok(v) => println!("{v}"), Err(e) => { eprintln!("{e}"); std::process::exit(1); } },
-        "account" => println!("{}", serde_json::to_string_pretty(&Account::new("acct-1", "demo", "demo@example.invalid")).unwrap()),
+        "system" => match serde_json::to_string_pretty(&Environment::system()) {
+            Ok(v) => println!("{v}"),
+            Err(e) => {
+                eprintln!("{e}");
+                std::process::exit(1);
+            }
+        },
+        "json" => match Environment::snapshot().and_then(|s| s.to_json_pretty()) {
+            Ok(v) => println!("{v}"),
+            Err(e) => {
+                eprintln!("{e}");
+                std::process::exit(1);
+            }
+        },
+        "account" => println!(
+            "{}",
+            serde_json::to_string_pretty(&Account::new("acct-1", "demo", "demo@example.invalid"))
+                .unwrap()
+        ),
         "menu" => println!("{}", serde_json::to_string_pretty(&default_menu()).unwrap()),
         "settings" => println!("{}", serde_json::to_string_pretty(&Settings::default()).unwrap()),
         "api" => println!("{}", serde_json::to_string_pretty(&ApiApplicationConfig::default()).unwrap()),
@@ -86,6 +156,10 @@ fn main() {
         }
         "math" => run_math(&mut args),
         "help" | "--help" | "-h" => print_help(),
-        other => { eprintln!("Unknown command: {other}"); print_help(); std::process::exit(2); }
+        other => {
+            eprintln!("Unknown command: {other}");
+            print_help();
+            std::process::exit(2);
+        }
     }
 }
