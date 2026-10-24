@@ -34,7 +34,11 @@ fn run_math(args: &mut impl Iterator<Item = std::ffi::OsString>) {
         }
         "classify" => {
             let n = parse_i64(args.next(), "rust-env math classify <N>");
-            println!("{}", serde_json::to_string_pretty(&classify_integer(n)).expect("classification serializes"));
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&classify_integer(n))
+                    .expect("classification serializes")
+            );
         }
         "gcd" => {
             let a = parse_i64(args.next(), "rust-env math gcd <A> <B>");
@@ -149,7 +153,10 @@ fn main() {
         ),
         "menu" => println!("{}", serde_json::to_string_pretty(&default_menu()).unwrap()),
         "settings" => println!("{}", serde_json::to_string_pretty(&Settings::default()).unwrap()),
-        "api" => println!("{}", serde_json::to_string_pretty(&ApiApplicationConfig::default()).unwrap()),
+        "api" => println!(
+            "{}",
+            serde_json::to_string_pretty(&ApiApplicationConfig::default()).unwrap()
+        ),
         "api-app" => {
             let app = ApiApplication::new("app-1", "Rust Math Client", "acct-1");
             println!("{}", serde_json::to_string_pretty(&app).unwrap());
