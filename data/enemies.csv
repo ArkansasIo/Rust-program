@@ -1,0 +1,8 @@
+id,rank,archetype,hp_multiplier,damage_multiplier
+mob_common,Common,Brute,0.70,0.70
+mob_veteran,Veteran,Support,1.35,1.20
+mob_elite,Elite,Tank,2.50,2.00
+mob_assassin,Named,Assassin,3.00,2.50
+dungeon_boss,Boss,Caster,10.00,4.00
+world_boss,Boss,Controller,50.00,8.00
+raid_boss,Boss,Summoner,100.00,10.00
