@@ -1,6 +1,6 @@
 # Rust Environment + Mathematics API
 
-A reusable Rust library and command-line tool for inspecting process environment data and providing checked integer mathematics helpers.
+A reusable Rust library and command-line tool for inspecting process environment data, checked integer mathematics, and a small expression-language foundation for a future math programming environment.
 
 ## Features
 
@@ -9,6 +9,7 @@ A reusable Rust library and command-line tool for inspecting process environment
 - Export an environment snapshot as JSON.
 - Account, API application, settings, and nested-menu data models.
 - Integer mathematics helpers: prime testing, even/odd classification, greatest common divisor, and checked arithmetic.
+- Expression evaluator for integer/boolean values, variables, arithmetic, comparisons, and boolean operators.
 - Cross-platform GitHub Actions CI.
 
 ## Build and test
@@ -17,6 +18,7 @@ A reusable Rust library and command-line tool for inspecting process environment
 cargo build
 cargo test
 cargo run -- info
+cargo run --example math_rules
 ```
 
 Run formatting and lint checks:
@@ -49,7 +51,25 @@ rust-env math gcd 54 24
 rust-env math calc mul 6 7
 ```
 
-The math calculator uses checked `i64` arithmetic. Division requires an integral result; division by zero, overflow, and unknown operators return an error instead of silently truncating.
+The existing math CLI uses checked `i64` arithmetic. Division requires an integral result; division by zero, overflow, and unknown operators return an error instead of silently truncating.
+
+## Expression language library
+
+```rust
+use rust_environment_api::language::{evaluate, Value};
+use std::collections::HashMap;
+
+let variables = HashMap::from([
+    ("level".to_owned(), Value::Integer(12)),
+    ("active".to_owned(), Value::Boolean(true)),
+]);
+assert_eq!(
+    evaluate("level >= 10 && active", &variables),
+    Ok(Value::Boolean(true))
+);
+```
+
+Supported expressions include arithmetic (`+ - * / %`), parentheses, integer and boolean literals, caller-supplied variables, comparisons (`< <= > >= == !=`), and boolean logic (`! && ||`). Integers use checked 64-bit operations; division is integer-only. The evaluator is deliberately pure and bounded; it is not yet a full scripting language, a general-purpose IDE, or a security sandbox. See `docs/LANGUAGE_AND_IDE.md` for the implementation roadmap and limitations.
 
 ## Library example
 
@@ -66,6 +86,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```
 
 Math API details: [`docs/MATHEMATICS.md`](docs/MATHEMATICS.md).
+Language and IDE roadmap: [`docs/LANGUAGE_AND_IDE.md`](docs/LANGUAGE_AND_IDE.md).
 Development guide: [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
 
 ## Safety note
