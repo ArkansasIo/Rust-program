@@ -1,0 +1,13 @@
+CREATE TABLE accounts (id BIGINT PRIMARY KEY, username VARCHAR(64) NOT NULL UNIQUE, disabled BOOLEAN NOT NULL DEFAULT FALSE);
+CREATE TABLE sessions (session_id VARCHAR(128) PRIMARY KEY, account_id BIGINT NOT NULL, issued_tick BIGINT NOT NULL, expires_tick BIGINT NOT NULL, INDEX(account_id));
+CREATE TABLE characters (id BIGINT PRIMARY KEY, account_id BIGINT NOT NULL, name VARCHAR(64) NOT NULL UNIQUE, class VARCHAR(32) NOT NULL, level INT NOT NULL, zone_id VARCHAR(64) NOT NULL, pos_x DOUBLE NOT NULL DEFAULT 0, pos_y DOUBLE NOT NULL DEFAULT 0, online BOOLEAN NOT NULL DEFAULT FALSE, INDEX(account_id));
+CREATE TABLE character_xp (character_id BIGINT PRIMARY KEY, xp BIGINT NOT NULL DEFAULT 0, skill_points INT NOT NULL DEFAULT 0);
+CREATE TABLE wallets (character_id BIGINT PRIMARY KEY, gold BIGINT NOT NULL DEFAULT 0);
+CREATE TABLE inventory (character_id BIGINT NOT NULL, slot_index INT NOT NULL, item_id VARCHAR(128) NOT NULL, quantity INT NOT NULL, PRIMARY KEY(character_id,slot_index));
+CREATE TABLE quests (character_id BIGINT NOT NULL, quest_id VARCHAR(128) NOT NULL, state VARCHAR(32) NOT NULL, PRIMARY KEY(character_id,quest_id));
+CREATE TABLE skills (character_id BIGINT NOT NULL, skill_id VARCHAR(128) NOT NULL, rank INT NOT NULL DEFAULT 1, PRIMARY KEY(character_id,skill_id));
+CREATE TABLE guilds (id BIGINT PRIMARY KEY, name VARCHAR(64) NOT NULL UNIQUE);
+CREATE TABLE guild_members (guild_id BIGINT NOT NULL, character_id BIGINT NOT NULL, role VARCHAR(32) NOT NULL, PRIMARY KEY(guild_id,character_id));
+CREATE TABLE friends (character_id BIGINT NOT NULL, friend_id BIGINT NOT NULL, PRIMARY KEY(character_id,friend_id));
+CREATE TABLE mail (id BIGINT PRIMARY KEY, sender_id BIGINT NOT NULL, receiver_id BIGINT NOT NULL, subject VARCHAR(128) NOT NULL, body TEXT NOT NULL, created_tick BIGINT NOT NULL, claimed BOOLEAN NOT NULL DEFAULT FALSE, INDEX(receiver_id));
+CREATE TABLE audit_events (id BIGINT PRIMARY KEY AUTO_INCREMENT, account_id BIGINT, event_type VARCHAR(64) NOT NULL, payload JSON, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, INDEX(account_id));
