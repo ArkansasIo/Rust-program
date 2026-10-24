@@ -12,12 +12,20 @@ pub struct IntegerClassification {
 
 /// Return whether an integer is prime. Values below two are not prime.
 pub fn is_prime(value: i64) -> bool {
-    if value < 2 { return false; }
-    if value == 2 { return true; }
-    if value % 2 == 0 { return false; }
+    if value < 2 {
+        return false;
+    }
+    if value == 2 {
+        return true;
+    }
+    if value % 2 == 0 {
+        return false;
+    }
     let mut divisor = 3_i64;
     while divisor <= value / divisor {
-        if value % divisor == 0 { return false; }
+        if value % divisor == 0 {
+            return false;
+        }
         divisor += 2;
     }
     true
@@ -26,14 +34,23 @@ pub fn is_prime(value: i64) -> bool {
 /// Classify parity and primality.
 pub fn classify_integer(value: i64) -> IntegerClassification {
     let is_even = value % 2 == 0;
-    IntegerClassification { value, is_even, is_odd: !is_even, is_prime: is_prime(value) }
+    IntegerClassification {
+        value,
+        is_even,
+        is_odd: !is_even,
+        is_prime: is_prime(value),
+    }
 }
 
 /// Euclid's greatest common divisor. Returns None when abs(i64::MIN) is required.
 pub fn gcd(a: i64, b: i64) -> Option<u64> {
     let mut x = a.checked_abs()? as u64;
     let mut y = b.checked_abs()? as u64;
-    while y != 0 { let remainder = x % y; x = y; y = remainder; }
+    while y != 0 {
+        let remainder = x % y;
+        x = y;
+        y = remainder;
+    }
     Some(x)
 }
 
