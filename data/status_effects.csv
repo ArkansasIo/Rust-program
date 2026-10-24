@@ -1,0 +1,34 @@
+kind,name,category,default_duration,stacking,notes
+buff,PowerSurge,offensive,10.0,refresh,damage increase
+buff,Berserk,offensive,8.0,refresh,attack speed increase with defense penalty
+buff,ArcaneAmplify,offensive,12.0,refresh,spell power increase
+buff,Precision,offensive,12.0,refresh,critical chance increase
+buff,Shielded,defensive,15.0,replace,temporary barrier
+buff,Fortified,defensive,10.0,refresh,damage reduction
+buff,Regeneration,defensive,12.0,stack,periodic healing
+buff,DamageAbsorption,defensive,10.0,replace,absorbs incoming damage
+buff,Invulnerability,defensive,3.0,replace,temporary immunity
+buff,Haste,utility,10.0,refresh,speed increase
+buff,Stealth,utility,20.0,replace,reduced detection
+buff,Invisibility,utility,10.0,replace,hidden from normal targeting
+debuff,Stun,cc,2.0,dr,unable to act
+debuff,Freeze,cc,2.0,dr,unable to act and movement disabled
+debuff,Root,cc,3.0,dr,movement disabled
+debuff,Silence,cc,4.0,dr,ability restriction
+debuff,Fear,cc,3.0,dr,forced movement
+debuff,Charm,cc,3.0,dr,target control
+debuff,Sleep,cc,4.0,dr,breaks on damage
+debuff,Knockback,cc,0.5,dr,forced displacement
+debuff,Knockdown,cc,1.5,dr,stagger state
+debuff,Burn,dot,8.0,stack,periodic fire damage
+debuff,Poison,dot,10.0,stack,periodic poison damage
+debuff,Bleed,dot,8.0,stack,periodic physical damage
+debuff,Corruption,dot,12.0,stack,damage plus healing reduction
+debuff,Frostbite,dot,8.0,stack,cold damage and slow
+debuff,Shock,dot,6.0,stack,lightning damage and interrupt chance
+debuff,Weakness,attribute,10.0,refresh,STR reduction
+debuff,Frailty,attribute,10.0,refresh,CON reduction
+debuff,Hex,attribute,10.0,refresh,INT reduction
+debuff,Slow,attribute,8.0,refresh,movement and tempo reduction
+debuff,Cripple,attribute,10.0,refresh,DEX reduction
+debuff,Curse,attribute,12.0,refresh,broad-stat reduction
