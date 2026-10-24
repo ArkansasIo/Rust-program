@@ -11,10 +11,23 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(id: impl Into<String>, username: impl Into<String>, email: impl Into<String>) -> Self {
+    pub fn new(
+        id: impl Into<String>,
+        username: impl Into<String>,
+        email: impl Into<String>,
+    ) -> Self {
         let username = username.into();
-        Self { id: id.into(), display_name: username.clone(), username, email: email.into(), roles: vec!["user".into()], enabled: true }
+        Self {
+            id: id.into(),
+            display_name: username.clone(),
+            username,
+            email: email.into(),
+            roles: vec!["user".into()],
+            enabled: true,
+        }
     }
 
-    pub fn is_admin(&self) -> bool { self.roles.iter().any(|r| r == "admin") }
+    pub fn is_admin(&self) -> bool {
+        self.roles.iter().any(|r| r == "admin")
+    }
 }
