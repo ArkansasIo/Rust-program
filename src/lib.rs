@@ -1,15 +1,19 @@
-pub mod account;
-pub mod api;
-pub mod environment;
-pub mod language;
-pub mod math;
-pub mod menu;
-pub mod settings;
+pub mod ai;
+pub mod abilities;
+pub mod battle;
+pub mod combat;
+pub mod core;
+pub mod entities;
+pub mod events;
+pub mod inventory;
+pub mod items;
+pub mod loot;
+pub mod progression;
+pub mod stats;
+pub mod world;
 
-pub use account::Account;
-pub use api::{ApiApplication, ApiApplicationConfig};
-pub use environment::{
-    Environment, EnvironmentError, EnvironmentSnapshot, ProcessArguments, SystemInfo,
-};
-pub use menu::{MenuItem, default_menu};
-pub use settings::Settings;
+pub use battle::{Battle, BattleConfig, BattleResult};
+pub use combat::{AttackKind, CombatEvent, CombatSystem, DamageType};
+pub use core::{EntityId, GameTick, TeamId, Vec2};
+pub use entities::{Combatant, CombatantState};
+pub use stats::{Attributes, CombatStats, Resources};
