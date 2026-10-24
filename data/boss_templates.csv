@@ -1,0 +1,8 @@
+boss_type,phase_thresholds,party_size_min,party_size_max,enrage_seconds,mechanics,loot_tier
+DungeonBoss,0.75|0.50|0.25,1,5,900,adds|telegraph|arena_change,Epic
+WorldBoss,0.75|0.50|0.25,5,100,1800,adds|territory|environmental,Legendary
+RaidBoss,0.75|0.50|0.25,8,40,1200,adds|roles|phases|environmental,Legendary
+EventBoss,0.50|0.25,1,100,900,world_event|adds|phase_shift,Event
+StoryBoss,0.50|0.25,1,5,600,scripted|telegraph|phase_shift,Story
+MythicBoss,0.75|0.50|0.25|0.10,5,40,900,complex_phases|immunity|enrage|adds,Mythic
+SecretBoss,0.66|0.33,1,10,1200,hidden_trigger|unique_mechanics|rare_loot,Mythic
