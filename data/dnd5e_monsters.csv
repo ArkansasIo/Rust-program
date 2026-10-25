@@ -1,0 +1,6 @@
+id,name,level,role,size,armor_class,max_hp,speed
+ashen_wolf,Ashen Wolf,2,skirmisher,medium,13,22,40
+iron_goblin,Iron Goblin,3,brute,small,14,28,30
+void_cultist,Void Cultist,5,caster,medium,15,45,30
+crypt_knight,Crypt Knight,8,tank,medium,18,110,30
+storm_hydra,Storm Hydra,12,boss,huge,19,260,40
