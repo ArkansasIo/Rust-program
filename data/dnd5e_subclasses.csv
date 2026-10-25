@@ -1,0 +1,5 @@
+id,class,name,unlock_level,role
+berserker_path,barbarian,Berserker Path,3,frontline
+battle_mastery,fighter,Battle Mastery,3,tactical
+arcane_school,wizard,Arcane School,2,caster
+shadow_path,monk,Shadow Path,3,skirmisher
