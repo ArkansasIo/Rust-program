@@ -1,0 +1,7 @@
+id,name,slot,armor_bonus,damage_dice,value
+iron_sword,Iron Sword,main_hand,0,1d8,15
+steel_greatblade,Steel Greatblade,main_hand,0,2d6,75
+leather_armor,Leather Armor,chest,1,0,10
+plate_of_embers,Plate of Embers,chest,8,0,5000
+warding_shield,Warding Shield,off_hand,2,0,250
+arcane_focus,Arcane Focus,ranged,0,1d4,50
