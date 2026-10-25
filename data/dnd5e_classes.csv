@@ -1,0 +1,13 @@
+id,hit_die,primary_ability,save_1,save_2,spellcasting,role
+barbarian,d12,strength,strength,constitution,none,frontline
+bard,d8,charisma,dexterity,charisma,known,support
+cleric,d8,wisdom,wisdom,charisma,prepared,healer
+Druid,d8,wisdom,intelligence,wisdom,prepared,controller
+fighter,d10,strength/dexterity,strength,constitution,none,frontline
+monk,d8,dexterity/wisdom,strength,dexterity,none,skirmisher
+paladin,d10,strength/charisma,wisdom,charisma,prepared,hybrid
+ranger,d10,dexterity/wisdom,strength,dexterity,prepared,skirmisher
+rogue,d8,dexterity,dexterity,intelligence,none,assassin
+sorcerer,d6,charisma,constitution,charisma,known,caster
+warlock,d8,charisma,wisdom,charisma,pact,caster
+wizard,d6,intelligence,intelligence,wisdom,prepared,caster
