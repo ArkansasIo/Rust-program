@@ -1,0 +1,9 @@
+id,size,speed,ability_bonuses,traits,languages
+human,medium,30,strength+1|dexterity+1|constitution+1|intelligence+1|wisdom+1|charisma+1,adaptable,common
+elf,medium,30,dexterity+2,keen_senses|darkvision,common|elvish
+dwarf,medium,25,constitution+2,dwarven_resilience|darkvision,common|dwarvish
+halfling,small,25,dexterity+2,lucky|brave,common|halfling
+orc,medium,30,strength+2|constitution+1,relentless_endurance|darkvision,common|orcish
+tiefling,medium,30,charisma+2|intelligence+1,fire_resistance|darkvision,common|infernal
+dragonkin,medium,30,strength+2|charisma+1,breath_weapon|damage_resistance,common|draconic
+gnome,small,25,intelligence+2,gnome_cunning|darkvision,common|gnomish
