@@ -1,0 +1,4 @@
+id,name,detection_dc,disarm_dc,save_dc,damage,damage_type,trigger,reset
+needle_floor,Needle Floor,12,14,13,2d6,poison,pressure,false
+flame_gate,Flame Gate,15,16,15,4d6,fire,proximity,true
+arcane_rift,Arcane Rift,18,20,18,6d6,force,proximity,false
