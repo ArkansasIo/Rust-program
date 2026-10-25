@@ -1,0 +1,6 @@
+id,name,prerequisite_level,ability,bonus,tag
+iron_will,Iron Will,4,wisdom,1,defense
+fleet_footed,Fleet Footed,4,dexterity,1,mobility
+arcane_attunement,Arcane Attunement,4,intelligence,1,magic
+battle_hardened,Battle Hardened,4,strength,1,combat
+silver_tongue,Silver Tongue,4,charisma,1,social
