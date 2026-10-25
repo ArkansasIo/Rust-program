@@ -1,0 +1,4 @@
+id,name,difficulty,party_size,level_min,level_max,arena,rewards
+crypt_gate,The Crypt Gate,moderate,4,3,5,crypt_gate,gear|gold|xp
+ember_keep,Ember Keep,hard,4,6,8,ember_keep,gear|rare_gear|xp
+storm_hydra_lair,Storm Hydra Lair,deadly,5,10,13,storm_lair,boss_gear|mount|xp
