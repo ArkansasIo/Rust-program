@@ -1,0 +1,7 @@
+//! Playable ancestry definitions. Lore remains original to the game.
+use serde::{Deserialize, Serialize};
+use crate::dnd5e::{AbilityScore, AbilityScores, CreatureSize, Race};
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RaceDefinition { pub race:Race, pub name:String, pub size:CreatureSize, pub speed:i32, pub ability_bonuses:Vec<(AbilityScore,i32)>, pub traits:Vec<String>, pub languages:Vec<String> }
+impl RaceDefinition { pub fn apply(&self,scores:&mut AbilityScores){for (a,v) in &self.ability_bonuses{match a{AbilityScore::Strength=>scores.strength+=v,AbilityScore::Dexterity=>scores.dexterity+=v,AbilityScore::Constitution=>scores.constitution+=v,AbilityScore::Intelligence=>scores.intelligence+=v,AbilityScore::Wisdom=>scores.wisdom+=v,AbilityScore::Charisma=>scores.charisma+=v}}} }
+pub fn starter_races()->Vec<RaceDefinition>{use AbilityScore::*;use CreatureSize::*;use Race::*;vec![RaceDefinition{race:Human,name:"Human".into(),size:Medium,speed:30,ability_bonuses:vec![(Strength,1),(Dexterity,1),(Constitution,1),(Intelligence,1),(Wisdom,1),(Charisma,1)],traits:vec!["adaptable".into()],languages:vec!["common".into()]},RaceDefinition{race:Elf,name:"Elf".into(),size:Medium,speed:30,ability_bonuses:vec![(Dexterity,2)],traits:vec!["keen_senses".into(),"darkvision".into()],languages:vec!["common".into(),"elvish".into()]},RaceDefinition{race:Dwarf,name:"Dwarf".into(),size:Medium,speed:25,ability_bonuses:vec![(Constitution,2)],traits:vec!["dwarven_resilience".into(),"darkvision".into()],languages:vec!["common".into(),"dwarvish".into()]}]}
