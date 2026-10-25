@@ -1,0 +1,17 @@
+id,name,level,school,damage_type,damage_dice,concentration
+arcane_bolt,Arcane Bolt,0,evocation,force,1d10,false
+flame_burst,Flame Burst,1,evocation,fire,3d6,false
+frost_bind,Frost Bind,1,evocation,cold,2d8,true
+healing_word,Healing Word,1,evocation,,1d4,false
+shielding_ward,Shielding Ward,1,abjuration,,0,false
+thunder_wave,Thunder Wave,1,evocation,thunder,2d8,false
+arcane_spear,Arcane Spear,2,evocation,force,3d8,false
+mist_step,Mist Step,2,conjuration,,0,false
+fireball,Fireball,3,evocation,fire,8d6,false
+counterspell,Counterspell,3,abjuration,,0,false
+lightning_chain,Lightning Chain,3,evocation,lightning,8d6,false
+ice_storm,Ice Storm,4,evocation,cold,7d8,false
+wall_of_fire,Wall of Fire,4,evocation,fire,5d8,true
+cone_of_cold,Cone of Cold,5,evocation,cold,8d8,false
+raise_dead,Rise the Fallen,5,necromancy,,0,false
+meteor_storm,Meteor Storm,9,evocation,fire,20d6,false
