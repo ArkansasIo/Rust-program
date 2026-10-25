@@ -1,0 +1,7 @@
+id,name,skills,tools,languages,gold,feature
+acolyte,Acolyte,insight|religion,holy_symbol,common|celestial,15,temple_service
+soldier,Soldier,athletics|intimidation,gaming_set|vehicles,common,10,military_rank
+scholar,Scholar,arcana|history,library_tools,common,20,researcher
+scout,Scout,nature|survival,navigators_tools,common|regional,10,wilderness_guide
+merchant,Merchant,insight|persuasion,merchant_tools,common|trade,25,market_contacts
+outlander,Outlander,athletics|survival,musical_instrument,common|regional,10,wanderer
