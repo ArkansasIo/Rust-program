@@ -1,0 +1,8 @@
+//! Typed skill registry and d20 skill resolution.
+use serde::{Deserialize, Serialize};
+use crate::dnd5e::{AbilityScore, AbilityScores, CheckResult, ProficiencyTier, resolve_d20};
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum Skill { Acrobatics, AnimalHandling, Arcana, Athletics, Deception, History, Insight, Intimidation, Investigation, Medicine, Nature, Perception, Performance, Persuasion, Religion, SleightOfHand, Stealth, Survival }
+impl Skill { pub fn ability(self)->AbilityScore { use AbilityScore::*; match self { Self::Acrobatics|Self::SleightOfHand|Self::Stealth=>Dexterity, Self::AnimalHandling|Self::Insight|Self::Medicine|Self::Perception|Self::Survival=>Wisdom, Self::Arcana|Self::History|Self::Investigation|Self::Nature|Self::Religion=>Intelligence, Self::Athletics=>Strength, Self::Deception|Self::Intimidation|Self::Performance|Self::Persuasion=>Charisma } } pub const ALL:[Self;18]=[Self::Acrobatics,Self::AnimalHandling,Self::Arcana,Self::Athletics,Self::Deception,Self::History,Self::Insight,Self::Intimidation,Self::Investigation,Self::Medicine,Self::Nature,Self::Perception,Self::Performance,Self::Persuasion,Self::Religion,Self::SleightOfHand,Self::Stealth,Self::Survival]; }
+pub fn skill_modifier(scores:&AbilityScores, skill:Skill, proficiency:ProficiencyTier, level:u32)->i32 { scores.modifier_for(skill.ability()) + proficiency.bonus(level) }
+pub fn resolve_skill(scores:&AbilityScores, skill:Skill, proficiency:ProficiencyTier, level:u32, d20:u8, dc:i32)->CheckResult { resolve_d20(d20,skill_modifier(scores,skill,proficiency,level),dc) }
